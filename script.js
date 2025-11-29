@@ -169,6 +169,43 @@ function renderDetailPanel(monster) {
     const settingContent = document.getElementById('setting-content');
     const tabBtns = document.querySelectorAll('.tab-btn');
     
+ // 1. 다크 모드 스위치 요소를 가져옵니다.
+        const darkModeToggle = document.getElementById('darkmode-switch');
+        const body = document.body;
+
+        // 2. 다크 모드 상태를 로컬 저장소에서 불러오는 함수
+        function loadDarkModeState() {
+            // 로컬 저장소에 'dark-mode' 상태가 'enabled'로 저장되어 있는지 확인
+            const isDarkModeEnabled = localStorage.getItem('dark-mode') === 'enabled';
+            
+            if (isDarkModeEnabled) {
+                // 활성화 상태라면 body에 'dark-mode' 클래스 추가
+                body.classList.add('dark-mode');
+                // 스위치 체크 상태로 설정
+                darkModeToggle.checked = true;
+            } else {
+                // 비활성화 상태라면 클래스 제거 (기본 라이트 모드)
+                body.classList.remove('dark-mode');
+                darkModeToggle.checked = false;
+            }
+        }
+
+        // 3. 스위치 변경 이벤트 리스너 설정
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                // 스위치가 켜지면
+                body.classList.add('dark-mode');
+                localStorage.setItem('dark-mode', 'enabled'); // 상태 저장
+            } else {
+                // 스위치가 꺼지면
+                body.classList.remove('dark-mode');
+                localStorage.setItem('dark-mode', 'disabled'); // 상태 저장
+            }
+        });
+
+        // 페이지 로드 시 저장된 상태를 적용
+        loadDarkModeState();
+
     // 7. 탭 전환 처리 함수
     function handleTabSwitch(event) {
         const targetTab = event.currentTarget.dataset.tab;
