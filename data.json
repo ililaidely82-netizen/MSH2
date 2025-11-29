@@ -13,8 +13,8 @@
             "분노패턴": "S",
             "특수패턴1": "X",
             "특수패턴2": "X",
-            "main_attack_element": "N",
-            "weakness_element": "S"
+            "main_attack_element": "일반",
+            "weakness_element": "전기"
         },
         "detail": {
             "title": "백질풍 나르가쿠르가 공략",
@@ -39,8 +39,8 @@
             "분노패턴": "T",
             "특수패턴1": "S(번개)",
             "특수패턴2": "X",
-            "main_attack_element": "S",
-            "weakness_element": "I"
+            "main_attack_element": "전기",
+            "weakness_element": "빙"
         },
         "detail": {
             "title": "금뢰공 진오우거 공략",
@@ -65,15 +65,15 @@
             "분노패턴": "P",
             "특수패턴1": "X",
             "특수패턴2": "X",
-            "main_attack_element": "N",
-            "weakness_element": "W"
+            "main_attack_element": "일반",
+            "weakness_element": "물"
         },
         "detail": {
             "title": "오마 디아블로스 공략",
             "guide": [
-                "준비물: 소리폭탄, 해독약",
-                "화난 패턴: 강력한 돌진과 땅속 패턴 주의",
-                "땅 속 패턴 시 소리폭탄으로 격추 가능"
+                "준비물: 음폭탄, 강인한 신체",
+                "분노 패턴: 강력한 돌진과 땅속 패턴 주의",
+                "땅 속 패턴 시 음폭탄으로 격추 가능,안할시 헬 투 헬 발동"
             ]
         }
     },
@@ -91,14 +91,14 @@
             "분노패턴": "S",
             "특수패턴1": "X",
             "특수패턴2": "X",
-            "main_attack_element": "N",
-            "weakness_element": "S"
+            "main_attack_element": "일반",
+            "weakness_element": "전기"
         },
         "detail": {
             "title": "황구조 티가렉스 공략",
             "guide": [
-                "준비물: 냉기속성 무기, 마비 내성",
-                "화난 패턴을 빠르게 풀고 딜 집중"
+                "준비물: 뇌속성 무기, 마비 내성",
+                "무서움"
             ]
         }
     },
@@ -116,14 +116,14 @@
             "분노패턴": "S",
             "특수패턴1": "X",
             "특수패턴2": "X",
-            "main_attack_element": "F",
-            "weakness_element": "I"
+            "main_attack_element": "불",
+            "weakness_element": "빙"
         },
         "detail": {
             "title": "자독희 리오레이아 공략",
             "guide": [
-                "준비물: 해독약, 섬광탄",
-                "특수패턴: 강력한 독 공격에 주의"
+                "준비물: 해독약",
+                "특수패턴: 강력한 불 공격에 주의"
             ]
         }
     },
@@ -141,15 +141,15 @@
             "분노패턴": "T",
             "특수패턴1": "S(대전)",
             "특수패턴2": "X",
-            "main_attack_element": "S",
-            "weakness_element": "F"
+            "main_attack_element": "전기",
+            "weakness_element": "불"
         },
         "detail": {
             "title": "키린 공략",
             "guide": [
-                "준비물: 도약술, 회피의 명인, 마비 해제",
-                "일반패턴: S3연공격 후, 단계 제기 후 공략. 순위 3위 몬스터입니다.",
-                "화난 패턴: P3 연타 공격 -> 필살기 사용 -> 빈틈 포착"
+                "준비물: 회피 망치",
+                "일반패턴: S3연공격 후, 단계 제기 후 공략.",
+                "화난 패턴: P3 연타 공격"
             ]
         }
     },
@@ -167,13 +167,13 @@
             "분노패턴": "P",
             "특수패턴1": "T(공중)",
             "특수패턴2": "X",
-            "main_attack_element": "F",
-            "weakness_element": "W"
+            "main_attack_element": "불",
+            "weakness_element": "물"
         },
         "detail": {
             "title": "테오-테스카토르 공략",
             "guide": [
-                "광역 폭발 공격 주의, 냉기 속성 집중 공략",
+                "광역 폭발 공격 주의, 수 속성 집중 공략",
                 "맵 중앙에선 조심"
             ]
         }
@@ -192,14 +192,14 @@
             "분노패턴": "X",
             "특수패턴1": "X",
             "특수패턴2": "X",
-            "main_attack_element": "S",
-            "weakness_element": "I"
+            "main_attack_element": "전기",
+            "weakness_element": "빙"
         },
         "detail": {
             "title": "라잔 공략",
             "guide": [
                 "최상위 난이도 몬스터, 방어구 강화 필수",
-                "분노 패턴 시, 모든 특수패턴 발동"
+                "분노 패턴이 없음"
             ]
         }
     },
@@ -217,14 +217,14 @@
             "분노패턴": "P",
             "특수패턴1": "S(공중)",
             "특수패턴2": "X",
-            "main_attack_element": "I",
-            "weakness_element": "S"
+            "main_attack_element": "빙",
+            "weakness_element": "전기"
         },
         "detail": {
             "title": "크샬다오라 공략",
             "guide": [
                 "강력한 바람 장벽에 주의",
-                "독 속성 공격이 효과적"
+                "전기 속성 공격이 효과적"
             ]
         }
     },
@@ -242,8 +242,8 @@
             "분노패턴": "T",
             "특수패턴1": "P",
             "특수패턴2": "X",
-            "main_attack_element": "I",
-            "weakness_element": "F"
+            "main_attack_element": "빙",
+            "weakness_element": "불"
         },
         "detail": {
             "title": "이베르카나 공략",
@@ -267,8 +267,8 @@
             "분노패턴": "P",
             "특수패턴1": "X",
             "특수패턴2": "X",
-            "main_attack_element": "S",
-            "weakness_element": "I"
+            "main_attack_element": "전기",
+            "weakness_element": "빙"
         },
         "detail": {
             "title": "청전주 라이젝스 공략",
@@ -292,8 +292,8 @@
             "분노패턴": "P",
             "특수패턴1": "S(입불,꼬리불)",
             "특수패턴2": "X",
-            "main_attack_element": "F",
-            "weakness_element": "W"
+            "main_attack_element": "불",
+            "weakness_element": "물"
         },
         "detail": {
             "title": "신멸인 디노발드 공략",
@@ -318,7 +318,7 @@
             "특수패턴1": "S(부파)",
             "특수패턴2": "O",
             "main_attack_element": "자료없음",
-            "weakness_element": "S"
+            "weakness_element": "전기"
         },
         "detail": {
             "title": "맘-타로트 공략",
@@ -343,7 +343,7 @@
             "특수패턴1": "X",
             "특수패턴2": "X",
             "main_attack_element": "자료없음",
-            "weakness_element": "I"
+            "weakness_element": "빙"
         },
         "detail": {
             "title": "맘-타로트 공략",
@@ -367,8 +367,8 @@
             "분노패턴": "P",
             "특수패턴1": "눈 갑옷/돌덩이 파괴 (T)",
             "특수패턴2": "눈 스톰프/지진 (T)",
-            "main_attack_element": "I",
-            "weakness_element": "F"
+            "main_attack_element": "빙",
+            "weakness_element": "불"
         },
         "detail": {
             "title": "은령 가무토 공략",
@@ -392,8 +392,8 @@
             "분노패턴": "P",
             "특수패턴1": "거품 폭발 (T)",
             "특수패턴2": "비눗방울 상태 이상 (S)",
-            "main_attack_element": "W",
-            "weakness_element": "S"
+            "main_attack_element": "물",
+            "weakness_element": "전기"
         },
         "detail": {
             "title": "천안 타마미츠네 공략",
@@ -415,16 +415,16 @@
             "희귀도": "☆7",
             "일반패턴": "S",
             "분노패턴": "P",
-            "특수패턴1": "얼음 번개 공격 (T)",
-            "특수패턴2": "얼음 갑옷 파괴 (T)",
-            "main_attack_element": "I",
-            "weakness_element": "F"
+            "특수패턴1": "아이스 오라 (T)",
+            "특수패턴2": "X",
+            "main_attack_element": "빙",
+            "weakness_element": "불"
         },
         "detail": {
             "title": "키린 아종 공략",
             "guide": [
-                "더욱 강력한 얼음 번개 공격에 대비",
-                "방어구 강화 필수"
+                "아이스 오라 사용후 테크닉 전환",
+                "화나면 2번 공격"
             ]
         }
     },
@@ -436,14 +436,14 @@
         "species": "비룡종",
         "basic": {
             "도감번호": "132",
-            "이미": "티가렉스 희소종",
+            "이름": "티가렉스 희소종",
             "희귀도": "☆7",
-            "일반패턴": "S",
-            "분노패턴": "P",
+            "일반패턴": "P",
+            "분노패턴": "S",
             "특수패턴1": "대굉음/포효 파훼 (P)",
             "특수패턴2": "돌진/돌 날리기 파훼 (S)",
-            "main_attack_element": "N",
-            "weakness_element": "W"
+            "main_attack_element": "일반",
+            "weakness_element": "물"
         },
         "detail": {
             "title": "티가렉스 희소종 공략",
@@ -467,8 +467,8 @@
             "분노패턴": "P",
             "특수패턴1": "공중 패턴 (착지 유도 S)",
             "특수패턴2": "화염/독 공격 (T)",
-            "main_attack_element": "F",
-            "weakness_element": "D"
+            "main_attack_element": "불",
+            "weakness_element": "용"
         },
         "detail": {
             "title": "흑염왕 리오레우스 공략",
@@ -488,18 +488,26 @@
             "도감번호": "134",
             "이름": "리오레이아 희소종",
             "희귀도": "☆7",
-            "일반패턴": "T",
+            "일반패턴": "S",
             "분노패턴": "P",
-            "특수패턴1": "공중 패턴 (착지 유도 S)",
-            "특수패턴2": "꼬리 독 공격 (T)",
-            "main_attack_element": "F",
-            "weakness_element": "S"
+            "특수패턴1": "X",
+            "특수패턴2": "X",
+            "main_attack_element": "불",
+            "weakness_element": "전기"
         },
         "detail": {
             "title": "리오레이아 희소종 공략",
             "guide": [
-                "꼬리 독 공격이 매우 위협적",
-                "섬광탄과 해독약 필수"
+              "-비분노 영역-",
+              "스피드 2턴 공격함",
+             "플레임 블러스터(광역기) 시전후 분노패턴 돌입",
+             "-분노 영역-",
+             "달의 포효(버프 해제기)",
+             "베놉 스윕 후 P 공격",
+             "그 뒤 베놈 스윕(광역기,독) 후 퀸 저지 먼트(광역기)",
+             "-두번째 이후 일부 비분노 영역-",
+             "그 뒤 다시 처음으로 돌아 오거나 브레이브 플레임(버프기)",
+             "->플레임 블레스터/분노"
             ]
         }
     },
@@ -517,8 +525,8 @@
             "분노패턴": "P",
             "특수패턴1": "공중 패턴 (착지 유도 S)",
             "특수패턴2": "화염/독 공격 (T)",
-            "main_attack_element": "F",
-            "weakness_element": "W"
+            "main_attack_element": "불",
+            "weakness_element": "물"
         },
         "detail": {
             "title": "리오레우스 희소종 공략",
