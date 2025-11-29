@@ -1,0 +1,297 @@
+
+        /* CSS 변수 설정 - 모던하고 부드러운 팔레트로 변경 */
+        :root {
+            --bg-color: #f0f4f8; /* 아주 밝은 회색/하늘색 */
+            --main-font: 'Noto Sans KR', sans-serif;
+            --header-font: 'Jua', cursive;
+            --main-text: #2c3e50; /* 짙은 네이비 (딱딱한 검정 대신) */
+            --sub-text: #7f8c8d; /* 서브 텍스트용 회색 */
+            --card-bg: white;
+            --accent-color: #3498db; /* 밝고 산뜻한 파랑 */
+            --highlight-color: #ecf0f1; /* 은은한 하이라이트 배경 */
+            --radius-soft: 16px; /* 더 동글동글하게 */
+            --radius-sm: 8px;
+            --gap: 20px;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
+        }
+
+        /* 폰트 임포트 (Noto Sans KR 및 Jua 폰트) */
+        @import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;500;700&display=swap');
+
+        body {
+            /* 폰트 가중치를 300(얇게)으로 시작하여 부드러운 느낌을 줍니다 */
+            font-family: var(--main-font);
+            font-weight: 300; 
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            margin: 0;
+            padding: var(--gap);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            /* 딱딱한 테두리 대신 부드러운 그림자 사용 */
+            border: none;
+            border-radius: var(--radius-soft);
+            box-shadow: var(--shadow-light);
+            overflow: hidden; /* 자식 요소의 모서리 처리를 위해 */
+        }
+
+        /* 헤더 스타일 */
+        .header {
+            text-align: center;
+            padding: var(--gap) 0;
+            /* 굵은 테두리 대신 얇은 선 사용 */
+            border-bottom: 1px solid var(--highlight-color); 
+        }
+
+        .header h1 {
+            font-family: var(--header-font);
+            font-size: 2rem; /* 제목 글꼴을 더 크고 동글동글하게 */
+            color: var(--accent-color);
+            margin: 0 0 5px 0;
+            font-weight: 500;
+        }
+
+        .header h2 {
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 300;
+            color: var(--sub-text);
+        }
+
+        /* 탭 메뉴 */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid var(--highlight-color);
+            font-size: 1.1rem;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--sub-text);
+            opacity: 0.7;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .tab-btn.active {
+            opacity: 1;
+            color: var(--main-text);
+            /* 동글동글한 아래쪽 하이라이트 */
+            border-bottom: 4px solid var(--accent-color);
+        }
+
+        /* 상세 가이드 제목 */
+        .guide-title {
+            text-align: center;
+            font-size: 1.6rem;
+            padding: 15px 0;
+            margin-bottom: var(--gap);
+            font-weight: 700;
+            color: var(--main-text);
+        }
+
+        /* 몬스터 목록 */
+        .monster-list {
+            padding: 0 var(--gap);
+            /* 굵은 테두리 대신 얇은 선 사용 */
+            border-bottom: 1px solid var(--highlight-color);
+        }
+
+        .monster-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--highlight-color);
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .monster-item:last-child {
+            border-bottom: none;
+        }
+
+        .monster-item:hover, .monster-item.selected {
+            background-color: var(--highlight-color);
+            transform: translateY(-1px); /* 살짝 떠오르는 효과 */
+        }
+
+        .monster-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .monster-star {
+            color: #ffc107; /* 부드러운 금색 */
+            margin-left: 5px;
+        }
+
+        .detail-btn {
+            background: var(--accent-color);
+            color: white;
+            padding: 7px 12px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s;
+        }
+        .detail-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* 페이지네이션 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            gap: 15px;
+        }
+
+        .page-nav {
+            cursor: pointer;
+            padding: 5px 10px;
+            user-select: none;
+            color: var(--accent-color);
+            transition: opacity 0.2s;
+        }
+        
+        .page-nav.disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        /* 상세 정보 패널 */
+        .detail-guide {
+            padding: var(--gap);
+        }
+
+        .detail-sections {
+            display: flex;
+            gap: var(--gap);
+            /* 굵은 테두리 대신 얇은 선 사용 */
+            border-top: 1px solid var(--highlight-color); 
+            padding-top: var(--gap);
+        }
+
+        .info-section {
+            flex: 1;
+        }
+
+        .info-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-color); /* 제목 색상 강조 */
+            margin: 0 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--highlight-color); /* 부드러운 밑줄 */
+        }
+
+        .basic-info-content p {
+            margin: 5px 0;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .guide-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .guide-content li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .guide-content strong {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        /* 설정 화면 스타일 */
+        .setting-list {
+            padding: var(--gap);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--highlight-color);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 토글 스위치 스타일 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 25px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--sub-text); /* 비활성화 색상 */
+            transition: .4s;
+            border-radius: 25px; /* 동글동글한 스위치 */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 19px;
+            width: 19px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%; /* 동그란 버튼 */
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color); /* 활성화 색상 */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* 설정 탭 숨김 */
+        #setting-content {
+            display: none;
+        }
+
+    
