@@ -15,11 +15,11 @@
             --transition-speed: 0.3s; /* 애니메이션 속도 변수 추가 */
         }
             .dark-mode {
-            --bg-color: #1e272e;
+            --bg-color: #0e0700;
             --main-text: #ecf0f1;
             --sub-text: #95a5a6;
             --card-bg: #2c3e50;
-            --accent-color: #3498db;
+            --accent-color: #a4c8fb;
             --highlight-color: #34495e;
             --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); /* 다크 모드 그림자 강화 */
         }
@@ -374,7 +374,182 @@
         input:checked + .slider:before {
             transform: translateX(20px);
         }
+        
+                /* ------------------------------------ */
+        /* [추가] 몬스터 목록 보기 방식 설정 버튼 스타일 */
+        /* ------------------------------------ */
+        .mode-select-group {
+            display: flex;
+            background: var(--highlight-color);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+        }
 
+        .mode-btn {
+            background: transparent;
+            color: var(--main-text);
+            border: none;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            flex-grow: 1; /* 버튼이 영역을 균등하게 차지하도록 */
+        }
+
+        .mode-btn.active {
+            background: var(--card-bg); /* 활성화된 버튼만 배경색을 카드 색상으로 */
+            color: var(--accent-color);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); /* 살짝 떠 있는 효과 */
+            transform: scale(1.02);
+        }
+
+        /* ------------------------------------ */
+        /* [추가/변경] 카드형 뷰 스타일 (.card-view) */
+        /* ------------------------------------ */
+
+        /* 몬스터 목록 컨테이너에 .card-view 클래스가 추가되었을 때 적용 */
+        .monster-list.card-view {
+            display: grid;
+            /* 작은 화면에서는 1열, 보통 화면부터 2열 */
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+            gap: 10px;
+            padding: 10px var(--gap); /* 좌우 패딩을 container에서 가져오지 않고 직접 부여 */
+            border-bottom: none;
+        }
+
+        /* 페이지네이션 영역은 카드 뷰일 때 숨김 */
+        .card-view + .pagination {
+            display: none;
+        }
+
+        /* 카드형 아이템 스타일 */
+        .monster-list.card-view .monster-item {
+            /* 기존 목록 스타일 재정의 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 15px 10px;
+            height: 60px; /* 고정 높이로 통일감 */
+            border: 1px solid var(--highlight-color);
+            border-radius: var(--radius-sm);
+            border-bottom: none;
+            box-shadow: var(--shadow-light); /* 살짝 그림자 추가 */
+            
+            /* 기존 스타일 제거/재정의 */
+            border-bottom: none !important; /* 목록형에서 사용하던 선 제거 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 카드형 호버/선택 애니메이션 */
+        .monster-list.card-view .monster-item:hover, 
+        .monster-list.card-view .monster-item.selected {
+            background-color: var(--accent-color);
+            color: white; /* 텍스트 색상 반전 */
+            transform: translateY(-5px) scale(1.05); /* 더 튀어오르게 */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 카드형 아이템 내부 요소 스타일 조정 */
+        .monster-list.card-view .monster-item .monster-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: inherit; /* 부모(카드)의 색상을 따르도록 */
+        }
+        
+        .monster-list.card-view .monster-item .monster-star {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: inherit;
+        }
+
+        /* 카드형에서는 상세 버튼 불필요 -> 숨김 */
+        .monster-list.card-view .monster-item .detail-btn {
+            display: none;
+        }
+        
+        /* ------------------------------------ */
+        /* [변경] 기존 목록형 스타일 (.pagination-view) */
+        /* ------------------------------------ */
+        /* 목록형 뷰의 좌우 패딩을 몬스터 아이템 내부에서 처리하도록 변경하여 통일성 확보 */
+        .monster-list.pagination-view {
+            padding: 0; 
+            border-bottom: 1px solid var(--highlight-color);
+        }
+        
+        .monster-list.pagination-view .monster-item {
+            /* 목록형 아이템의 좌우 패딩을 명시적으로 var(--gap)으로 설정 */
+            padding: 6px 10px; 
+            border-bottom: 1px solid var(--highlight-color);
+        }
+        
+        /* 목록형 뷰일 때 페이지네이션 보이기 */
+        .pagination-view + .pagination {
+            display: flex; /* 기존 CSS의 flex를 다시 적용 */
+        }
+/* ------------------------------------ */
+/* 기존 카드형 스타일 (기본 모바일/작은 화면) */
+/* ------------------------------------ */
+.monster-list.card-view {
+    /* 기존: 120px 이상의 최소 너비로 자동 조절 (2~3열 정도) */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+    gap: 10px;
+    padding: 10px var(--gap); /* 기본 패딩 유지 */
+    /* ... 기타 스타일 유지 ... */
+}
+
+.monster-list.card-view .monster-item {
+    padding: 15px 10px; /* 아이템 내부 패딩 유지 */
+    /* ... 기타 스타일 유지 ... */
+}
+
+
+/* ------------------------------------ */
+/* 🟢 [추가] 태블릿/중간 화면 (@media) 조정 */
+/* 6x4 배열 (24개) 목표로 그리드 및 간격 조정 */
+/* ------------------------------------ */
+@media (min-width: 768px) {
+    
+    /* 1. 컨테이너 패딩 대폭 감소 */
+    .monster-list.card-view {
+        /* 좌우 패딩을 줄여 더 많은 공간 확보 */
+        padding: 5px 10px; 
+        gap: 8px; /* 간격도 살짝 줄임 */
+        
+        /* 2. 6열 배열 강제 설정 */
+        /* minmax(0, 1fr)은 아이템이 최소 너비 없이 공간을 균등하게 차지하게 함 */
+        grid-template-columns: repeat(6, minmax(0, 1fr)); 
+    }
+
+    /* 3. 아이템 내부 패딩 및 높이 조정 */
+    .monster-list.card-view .monster-item {
+        /* 아이템 내부 패딩과 높이를 줄여 카드 크기를 작게 만듭니다 */
+        padding: 10px 5px; 
+        height: 50px; /* 높이도 줄여서 공간 효율을 높임 */
+    }
+
+    /* 4. 글꼴 크기도 조정 (선택 사항) */
+    .monster-list.card-view .monster-item .monster-name {
+        font-size: 0.85rem;
+    }
+}
+
+/* ------------------------------------ */
+/* 큰 화면 (데스크톱) 추가 조정 (선택 사항) */
+/* ------------------------------------ */
+@media (min-width: 1024px) {
+    .monster-list.card-view {
+        /* 7열 이상도 가능하도록, 하지만 6열로 요청하셨으므로 6열 유지 */
+        grid-template-columns: repeat(7, minmax(0, 1fr)); 
+        gap: 8px;
+    }
+}
+
+        
         /* 설정 탭 보이도록 수정 */
         #setting-content {
             display: block; 
