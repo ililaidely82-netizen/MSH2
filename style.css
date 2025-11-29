@@ -12,60 +12,78 @@
             --radius-sm: 8px;
             --gap: 20px;
             --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
+            --transition-speed: 0.3s; /* 애니메이션 속도 변수 추가 */
+        }
+            .dark-mode {
+            --bg-color: #1e272e;
+            --main-text: #ecf0f1;
+            --sub-text: #95a5a6;
+            --card-bg: #2c3e50;
+            --accent-color: #3498db;
+            --highlight-color: #34495e;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); /* 다크 모드 그림자 강화 */
         }
 
         /* 폰트 임포트 (Noto Sans KR 및 Jua 폰트) */
         @import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;500;700&display=swap');
 
+        /* ------------------------------------------- */
+        /* 애니메이션 키프레임 정의 */
+        /* ------------------------------------------- */
+
+        /* 로드 시 아래에서 위로 부드럽게 나타나는 애니메이션 */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         body {
-            /* 폰트 가중치를 300(얇게)으로 시작하여 부드러운 느낌을 줍니다 */
             font-family: var(--main-font);
             font-weight: 300; 
             background-color: var(--bg-color);
             color: var(--main-text);
             margin: 0;
-            padding: 0; /* body padding 제거 */
+            padding: 0;
             display: flex;
-            /* 👇 수정: justify-content는 그대로 두어 가로 중앙 정렬 유지 */
             justify-content: center; 
-            /* 👇 수정: 내용이 화면 상단에 붙도록 flex-start 유지 */
             align-items: flex-start;
             min-height: 100vh;
-            /* 👇 추가: 스크롤 영역이 body에 생기지 않도록 함 */
             overflow-x: hidden;
+            
+            /* 👇 추가: 다크 모드 전환 시 부드러운 배경색 전환 */
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         .container {
-            /* 👇 수정: 최대 너비 제한을 풀고 화면 너비에 맞춥니다. */
             width: 100%;
-            /* max-width: 500px; 제거 */
-            
-            /* 👇 추가: 좌우 패딩을 container에 넣어 콘텐츠가 가장자리에 붙지 않게 함 */
             padding: 0 var(--gap);
-            
             background: var(--card-bg);
-            /* 딱딱한 테두리 대신 부드러운 그림자 사용 */
             border: none;
-            /* 👇 수정: 화면 전체를 덮으므로 상단 모서리 둥글기는 필요 없음 */
             border-radius: 0; 
-            box-shadow: none; /* 화면 전체를 덮을 때 그림자는 부자연스러울 수 있어 제거 */
+            box-shadow: none;
             overflow: hidden;
-            
-            /* 👇 추가: 모바일 환경에서 100% 너비를 보장하기 위해 필요할 수 있습니다. */
             min-height: 100vh;
+            
+            /* 👇 추가: 로드 시 Fade-In 애니메이션 적용 */
+            animation: fadeInSlideUp 0.8s ease-out;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
         }
         
-        /* 만약 화면이 너무 넓을 때 중앙에 모으고 싶다면, container에 max-width를 다시 적용하고 body에 중앙 정렬을 사용합니다. */
         @media (min-width: 1200px) {
             .container {
-                max-width: 1200px; /* 큰 화면에서는 최대 너비 제한 */
+                max-width: 1200px;
                 border-radius: var(--radius-soft);
                 box-shadow: var(--shadow-light);
-                margin: var(--gap) 0; /* 상하 여백 추가 */
+                margin: var(--gap) 0;
                 min-height: auto;
             }
             body {
-                /* 큰 화면에서 container를 중앙에 배치하기 위해 */
                 align-items: center; 
             }
         }
@@ -74,15 +92,14 @@
         /* 헤더 스타일 */
         .header {
             text-align: center;
-            /* 👇 수정: 상하 패딩을 var(--gap)으로 유지 */
             padding: var(--gap) 0;
-            /* 굵은 테두리 대신 얇은 선 사용 */
             border-bottom: 1px solid var(--highlight-color); 
+            transition: border-bottom-color var(--transition-speed) ease;
         }
 
         .header h1 {
             font-family: var(--header-font);
-            font-size: 2rem; /* 제목 글꼴을 더 크고 동글동글하게 */
+            font-size: 2rem;
             color: var(--accent-color);
             margin: 0 0 5px 0;
             font-weight: 500;
@@ -93,6 +110,7 @@
             margin: 0;
             font-weight: 300;
             color: var(--sub-text);
+            transition: color var(--transition-speed) ease;
         }
 
         /* 탭 메뉴 */
@@ -101,6 +119,7 @@
             justify-content: center;
             border-bottom: 1px solid var(--highlight-color);
             font-size: 1.1rem;
+            transition: border-bottom-color var(--transition-speed) ease;
         }
 
         .tab-btn {
@@ -109,14 +128,20 @@
             font-weight: 500;
             color: var(--sub-text);
             opacity: 0.7;
-            transition: all 0.3s ease-in-out;
+            /* 👇 애니메이션 추가 */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+        }
+
+        .tab-btn:hover {
+             /* 👇 애니메이션 추가 */
+             transform: scale(1.05);
         }
 
         .tab-btn.active {
             opacity: 1;
             color: var(--main-text);
-            /* 동글동글한 아래쪽 하이라이트 */
             border-bottom: 4px solid var(--accent-color);
+            transform: scale(1.0);
         }
 
         /* 상세 가이드 제목 */
@@ -131,21 +156,22 @@
 
         /* 몬스터 목록 */
         .monster-list {
-            /* 👇 수정: container에 좌우 패딩을 넣었으므로 여기서는 0으로 변경 */
             padding: 0;
             border-bottom: 1px solid var(--highlight-color);
+            transition: border-bottom-color var(--transition-speed) ease;
         }
         
-        /* 몬스터 아이템 내부 패딩 조정 (컨테이너 패딩과 합쳐지도록) */
         .monster-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px var(--gap); /* 👇 수정: 좌우 패딩 추가 */
+            padding: 12px var(--gap);
             cursor: pointer;
             border-bottom: 1px solid var(--highlight-color);
             border-radius: var(--radius-sm);
-            transition: background-color 0.2s, transform 0.1s;
+            /* 👇 애니메이션 강화 */
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1); 
+            box-shadow: none;
         }
 
         .monster-item:last-child {
@@ -154,7 +180,9 @@
 
         .monster-item:hover, .monster-item.selected {
             background-color: var(--highlight-color);
-            transform: translateY(-1px); /* 살짝 떠오르는 효과 */
+            /* 👇 애니메이션 강화 */
+            transform: translateY(-3px) scale(1.01); 
+            box-shadow: var(--shadow-light); 
         }
 
         .monster-name {
@@ -163,7 +191,7 @@
         }
 
         .monster-star {
-            color: #ffc107; /* 부드러운 금색 */
+            color: #ffc107;
             margin-left: 5px;
         }
 
@@ -177,10 +205,17 @@
             cursor: pointer;
             font-weight: 500;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.2s;
+            /* 👇 애니메이션 강화 */
+            transition: all 0.2s ease-out; 
         }
         .detail-btn:hover {
             background-color: #2980b9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        /* 👇 애니메이션 추가 */
+        .detail-btn:active {
+            transform: scale(0.95);
+            box-shadow: none;
         }
 
         /* 페이지네이션 */
@@ -199,30 +234,37 @@
             padding: 5px 10px;
             user-select: none;
             color: var(--accent-color);
-            transition: opacity 0.2s;
+            /* 👇 애니메이션 강화 */
+            transition: all 0.1s ease-in-out;
+            border-radius: var(--radius-sm);
         }
         
         .page-nav.disabled {
             opacity: 0.3;
             cursor: default;
         }
+        
+        /* 👇 애니메이션 추가 */
+        .page-nav:not(.disabled):active {
+            background-color: var(--accent-color);
+            color: white;
+            transform: scale(0.9);
+        }
 
         /* 상세 정보 패널 */
         .detail-guide {
-            /* 👇 수정: container에 좌우 패딩을 넣었으므로 여기서는 var(--gap) 0으로 변경 */
             padding: var(--gap) 0;
         }
 
         .detail-sections {
-            /* 👇 수정: 화면이 넓어질 경우 섹션이 옆으로 나란히 배치되도록 유지 */
             display: flex;
-            flex-direction: row; /* 데스크톱에서 가로로 배치 */
+            flex-direction: row;
             gap: var(--gap);
             border-top: 1px solid var(--highlight-color); 
             padding-top: var(--gap);
-            /* 👇 추가: 좌우 패딩을 여기서도 넣어줍니다. */
             padding-left: var(--gap); 
             padding-right: var(--gap);
+            transition: border-top-color var(--transition-speed) ease;
         }
 
         /* 모바일 환경에서는 상세 섹션을 세로로 배치 */
@@ -240,10 +282,11 @@
         .info-section h3 {
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--accent-color); /* 제목 색상 강조 */
+            color: var(--accent-color);
             margin: 0 0 10px 0;
             padding-bottom: 5px;
-            border-bottom: 2px solid var(--highlight-color); /* 부드러운 밑줄 */
+            border-bottom: 2px solid var(--highlight-color);
+            transition: border-bottom-color var(--transition-speed) ease;
         }
 
         .basic-info-content p {
@@ -269,7 +312,6 @@
         }
         /* 설정 화면 스타일 */
         .setting-list {
-            /* 👇 수정: container에 좌우 패딩을 넣었으므로 여기서는 var(--gap) 0으로 변경 */
             padding: var(--gap) 0;
         }
 
@@ -277,7 +319,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px var(--gap); /* 👇 수정: 좌우 패딩 추가 */
+            padding: 12px var(--gap);
             border-bottom: 1px solid var(--highlight-color);
             font-size: 1.1rem;
             font-weight: 500;
@@ -287,7 +329,7 @@
             border-bottom: none;
         }
 
-        /* 토글 스위치 스타일 (변경 없음) */
+        /* 토글 스위치 스타일 (애니메이션 트랜지션 추가) */
         .switch {
             position: relative;
             display: inline-block;
@@ -308,9 +350,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--sub-text); /* 비활성화 색상 */
-            transition: .4s;
-            border-radius: 25px; /* 동글동글한 스위치 */
+            background-color: var(--sub-text); 
+            transition: background-color .4s, transform .4s;
+            border-radius: 25px; 
         }
 
         .slider:before {
@@ -322,18 +364,18 @@
             bottom: 3px;
             background-color: white;
             transition: .4s;
-            border-radius: 50%; /* 동그란 버튼 */
+            border-radius: 50%;
         }
 
         input:checked + .slider {
-            background-color: var(--accent-color); /* 활성화 색상 */
+            background-color: var(--accent-color); 
         }
 
         input:checked + .slider:before {
             transform: translateX(20px);
         }
 
-        /* 설정 탭 숨김 (변경 없음) */
+        /* 설정 탭 보이도록 수정 */
         #setting-content {
-            display: none;
+            display: block; 
         }
