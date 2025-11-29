@@ -1,412 +1,563 @@
-        /* CSS 변수 설정 - 모던하고 부드러운 팔레트로 변경 */
-        :root {
-            --bg-color: #f0f4f8; /* 아주 밝은 회색/하늘색 */
-            --main-font: 'Noto Sans KR', sans-serif;
-            --header-font: 'Jua', cursive;
-            --main-text: #2c3e50; /* 짙은 네이비 (딱딱한 검정 대신) */
-            --sub-text: #7f8c8d; /* 서브 텍스트용 회색 */
-            --card-bg: white;
-            --accent-color: #3498db; /* 밝고 산뜻한 파랑 */
-            --highlight-color: #ecf0f1; /* 은은한 하이라이트 배경 */
-            --radius-soft: 16px; /* 더 동글동글하게 */
-            --radius-sm: 8px;
-            --gap: 20px;
-            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
-            --transition-speed: 0.3s; /* 애니메이션 속도 변수 추가 */
-        }
-            .dark-mode {
-            --bg-color: #0e0700;
-            --main-text: #ecf0f1;
-            --sub-text: #95a5a6;
-            --card-bg: #2c3e50;
-            --accent-color: #a4c8fb;
-            --highlight-color: #34495e;
-            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); /* 다크 모드 그림자 강화 */
-        }
+/* ========================================================= */
+/* I. CSS 변수 및 폰트 설정 */
+/* ========================================================= */
 
-        /* 폰트 임포트 (Noto Sans KR 및 Jua 폰트) */
-        @import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;500;700&display=swap');
+/* CSS 변수 설정 - 모던하고 부드러운 팔레트로 변경 및 대비 강화 */
+:root {
+    --bg-color: #f7f9fc; /* 아주 밝은 배경색 (푸른 기운이 도는 화이트) */
+    --main-font: 'Noto Sans KR', sans-serif;
+    --header-font: 'Jua', cursive;
+    --main-text: #2c3e50; /* 짙은 네이비 (딱딱한 검정 대신) */
+    --sub-text: #7f8c8d; /* 서브 텍스트용 중간 회색 */
+    --card-bg: #ffffff; /* 카드 배경은 순수 화이트로 대비 */
+    --header-accent-color: #ffffff; /* 헤더 제목 색상: 배경 대비를 위해 순수 화이트로 설정 */
+    --accent-color: #3498db; /* 메인 강조색: 선명한 파랑으로 대비 강화 */
+    --highlight-color: #ecf0f1; /* 은은한 하이라이트 배경 */
+    --radius-soft: 16px; 
+    --radius-sm: 8px;
+    --gap: 20px;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    --transition-speed: 0.3s; 
+}
+.dark-mode {
+    --bg-color: #1e272e; /* 다크 모드 배경색: 눈이 편안한 짙은 회색 */
+    --main-text: #ecf0f1;
+    --sub-text: #bdc3c7; 
+    --card-bg: #2f3640; 
+    --header-accent-color: #ffffff; 
+    --accent-color: #5dade2; /* 다크 모드 강조색: 채도 높은 밝은 파랑으로 대비 강화 */
+    --highlight-color: #34495e;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); 
+}
 
-        /* ------------------------------------------- */
-        /* 애니메이션 키프레임 정의 */
-        /* ------------------------------------------- */
+/* 폰트 임포트 (Noto Sans KR 및 Jua 폰트) */
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;500;700;900&display=swap');
 
-        /* 로드 시 아래에서 위로 부드럽게 나타나는 애니메이션 */
-        @keyframes fadeInSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+/* ------------------------------------------- */
+/* 애니메이션 키프레임 정의 */
+/* ------------------------------------------- */
+
+/* 로드 시 아래에서 위로 부드럽게 나타나는 애니메이션 */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ========================================================= */
+/* II. 기본 레이아웃 및 컨테이너 스타일 */
+/* ========================================================= */
+
+body {
+    font-family: var(--main-font);
+    font-weight: 500; /* 기본 본문 굵기를 500으로 올려 가독성 향상 */
+    background-color: var(--bg-color);
+    color: var(--main-text);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-x: hidden;
+    
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.container {
+    width: 100%;
+    padding: 0 var(--gap);
+    background: var(--card-bg);
+    border: none;
+    border-radius: 0; 
+    box-shadow: none;
+    overflow: hidden;
+    min-height: 100vh;
+    
+    animation: fadeInSlideUp 0.8s ease-out;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+        border-radius: var(--radius-soft);
+        box-shadow: var(--shadow-light);
+        margin: var(--gap) 0;
+        min-height: auto;
+    }
+    body {
+        align-items: center; 
+    }
+}
+
+
+/* ========================================================= */
+/* III. 헤더 스타일 (배경 블러 및 둥근 모서리 적용) */
+/* ========================================================= */
+
+.header {
+    position: relative; 
+    overflow: hidden; 
+    margin-top: 50px;
+    
+    text-align: center;
+    padding: var(--gap) 0;
+    
+    background-image: none;
+    
+    border-bottom: 1px solid var(--highlight-color); 
+    transition: border-bottom-color var(--transition-speed) ease;
+    z-index: 1; 
+
+    /* 모든 모서리를 둥글게 */
+    border-radius: 15px; 
+}
+
+/* 배경 이미지, 블러, 오버레이 담당 가상 요소 */
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* 👇 이미지 경로를 실제 경로로 지정해주세요. */
+    background-image: url('몬스터.jpg'); 
+    
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    
+    /* 블러 효과 적용 (3px) */
+    filter: blur(3px); 
+    
+    /* 블러 효과로 인한 테두리 확장 방지 */
+    transform: scale(1.02); 
+    
+    /* 텍스트 뒤로 배치 */
+    z-index: -1; 
+
+    /* 배경 오버레이를 50% 투명도로 올려 대비 강화 */
+    background-color: rgba(0, 0, 0, 0.5); 
+    background-blend-mode: multiply;
+
+    /* 부모와 동일하게 둥근 모서리를 가지도록 함 */
+    border-radius: 15px; 
+}
+
+/* 헤더 제목 (h1) 스타일 - 가독성 최적화 */
+.header h1 {
+    font-family: var(--header-font);
+    font-size: 2.4rem; 
+    color: var(--header-accent-color); /* 순수 화이트로 대비 극대화 */
+    margin: 0 0 5px 0;
+    font-weight: 900; 
+    letter-spacing: 2px; /* 글자 간격 넓혀 가독성 향상 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* 짙은 그림자로 대비 강화 */
+}
+
+/* 헤더 부제목 (h2) 스타일 - 가독성 최적화 */
+.header h2 {
+    font-size: 1.1rem; 
+    margin: 0;
+    font-weight: 700; /* 폰트 굵기를 700으로 올려 대비 강화 */
+    color: #f7f9fc; /* 배경과 잘 어울리는 아주 밝은 색상 */
+    transition: color var(--transition-speed) ease;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 짙은 그림자로 대비 강화 */
+}
+
+/* 다크 모드일 때 배경 오버레이 색상 조정 */
+body.dark-mode .header::before {
+    background-color: rgba(0, 0, 0, 0.7); /* 다크 모드 시 오버레이를 더 어둡게 */
+}
+
+
+/* ========================================================= */
+/* IV. 탭 메뉴 및 상세 정보 스타일 */
+/* ========================================================= */
+
+/* 탭 메뉴 */
+.tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--highlight-color);
+    font-size: 1.1rem;
+    transition: border-bottom-color var(--transition-speed) ease;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--sub-text);
+    opacity: 0.7;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+
+.tab-btn:hover {
+     transform: scale(1.05);
+}
+
+.tab-btn.active {
+    opacity: 1;
+    color: var(--main-text);
+    border-bottom: 4px solid var(--accent-color);
+    transform: scale(1.0);
+}
+
+/* 상세 가이드 제목 */
+.guide-title {
+    text-align: center;
+    font-size: 1.6rem;
+    padding: 15px 0;
+    margin-bottom: var(--gap);
+    font-weight: 700;
+    color: var(--main-text);
+}
+
+/* 상세 정보 패널 */
+.detail-guide {
+    padding: var(--gap) 0;
+}
+
+.detail-sections {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+    border-top: 1px solid var(--highlight-color); 
+    padding-top: var(--gap);
+    padding-left: var(--gap); 
+    padding-right: var(--gap);
+    transition: border-top-color var(--transition-speed) ease;
+}
+
+@media (max-width: 768px) {
+    .detail-sections {
+        flex-direction: column;
+    }
+}
+
+
+.info-section {
+    flex: 1;
+}
+
+.info-section h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--highlight-color);
+    transition: border-bottom-color var(--transition-speed) ease;
+}
+
+.basic-info-content p {
+    margin: 5px 0;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.guide-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.guide-content li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.guide-content strong {
+    color: var(--accent-color);
+    font-weight: 700; /* 가독성을 위해 500에서 700으로 올림 */
+}
+
+
+/* ========================================================= */
+/* V. 몬스터 목록 (List & Card View) 스타일 */
+/* ========================================================= */
+
+.monster-list {
+    padding: 0;
+    border-bottom: 1px solid var(--highlight-color);
+    transition: border-bottom-color var(--transition-speed) ease;
+}
+
+/* -------------------- */
+/* 목록형 뷰 (.pagination-view) */
+/* -------------------- */
+.monster-list.pagination-view {
+    padding: 0; 
+    border-bottom: 1px solid var(--highlight-color);
+}
+.monster-list.pagination-view .monster-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px var(--gap); /* 좌우 패딩을 var(--gap)으로 설정 */
+    cursor: pointer;
+    border-bottom: 1px solid var(--highlight-color);
+    border-radius: var(--radius-sm);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1); 
+    box-shadow: none;
+}
+.monster-list.pagination-view .monster-item:last-child {
+    border-bottom: none;
+}
+.monster-list.pagination-view .monster-item:hover, 
+.monster-list.pagination-view .monster-item.selected {
+    background-color: var(--highlight-color);
+    transform: translateY(-3px) scale(1.01); 
+    box-shadow: var(--shadow-light); 
+}
+.monster-list.pagination-view .monster-name {
+    font-size: 1.1rem;
+    font-weight: 700; /* 굵게 설정 */
+}
+.monster-list.pagination-view .monster-star {
+    color: #ffc107;
+    margin-left: 5px;
+}
+.pagination-view + .pagination {
+    display: flex; 
+}
+
+
+/* -------------------- */
+/* 카드형 뷰 (.card-view) */
+/* -------------------- */
+.monster-list.card-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+    gap: 10px;
+    padding: 10px var(--gap); 
+    border-bottom: none;
+}
+.card-view + .pagination {
+    display: none;
+}
+.monster-list.card-view .monster-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 15px 10px;
+    height: 60px; 
+    border: 1px solid var(--highlight-color);
+    border-radius: var(--radius-sm);
+    border-bottom: none !important; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.monster-list.card-view .monster-item:hover, 
+.monster-list.card-view .monster-item.selected {
+    background-color: var(--accent-color);
+    color: white; 
+    transform: translateY(-5px) scale(1.05); 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+.monster-list.card-view .monster-item .monster-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+    color: inherit; 
+}
+.monster-list.card-view .monster-item .monster-star {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: inherit;
+}
+.monster-list.card-view .monster-item .detail-btn {
+    display: none;
+}
+
+
+/* -------------------- */
+/* 미디어 쿼리 (태블릿 크기 - 6xN 배열) */
+/* -------------------- */
+@media (min-width: 768px) {
+    .monster-list.card-view {
+        padding: 5px 10px; 
+        gap: 8px; 
+        grid-template-columns: repeat(6, minmax(0, 1fr)); 
+    }
+    .monster-list.card-view .monster-item {
+        padding: 10px 5px; 
+        height: 50px; 
+    }
+    .monster-list.card-view .monster-item .monster-name {
+        font-size: 0.85rem;
+    }
+}
+@media (min-width: 1024px) {
+    .monster-list.card-view {
+        grid-template-columns: repeat(7, minmax(0, 1fr)); 
+        gap: 8px;
+    }
+}
+
+
+/* ========================================================= */
+/* VI. 페이지네이션 및 버튼 스타일 */
+/* ========================================================= */
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    gap: 15px;
+}
+.page-nav {
+    cursor: pointer;
+    padding: 5px 10px;
+    user-select: none;
+    color: var(--accent-color);
+    transition: all 0.1s ease-in-out;
+    border-radius: var(--radius-sm);
+}
+.page-nav.disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+.page-nav:not(.disabled):active {
+    background-color: var(--accent-color);
+    color: white;
+    transform: scale(0.9);
+}
+
+/* 상세 버튼 */
+.detail-btn {
+    background: var(--accent-color);
+    color: white;
+    padding: 7px 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-out; 
+}
+.detail-btn:hover {
+    background-color: #2980b9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.detail-btn:active {
+    transform: scale(0.95);
+    box-shadow: none;
+}
+
+
+/* ========================================================= */
+/* VII. 설정 화면 스타일 */
+/* ========================================================= */
+
+.setting-list {
+    padding: var(--gap) 0;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px var(--gap);
+    border-bottom: 1px solid var(--highlight-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+/* -------------------- */
+/* 토글 스위치 */
+/* -------------------- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 25px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--sub-text); 
+    transition: background-color .4s, transform .4s;
+    border-radius: 25px; 
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--bg-color);
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: var(--accent-color); 
+}
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
         
-        body {
-            font-family: var(--main-font);
-            font-weight: 300; 
-            background-color: var(--bg-color);
-            color: var(--main-text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center; 
-            align-items: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
-            
-            /* 👇 추가: 다크 모드 전환 시 부드러운 배경색 전환 */
-            transition: background-color 0.4s ease, color 0.4s ease;
-        }
+/* -------------------- */
+/* 뷰 모드 버튼 */
+/* -------------------- */
+.mode-select-group {
+    display: flex;
+    background: var(--highlight-color);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+}
+.mode-btn {
+    background: transparent;
+    color: var(--main-text);
+    border: none;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    flex-grow: 1; 
+}
+.mode-btn.active {
+    background: var(--card-bg); 
+    color: var(--accent-color);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); 
+    transform: scale(1.02);
+}
 
-        .container {
-            width: 100%;
-            padding: 0 var(--gap);
-            background: var(--card-bg);
-            border: none;
-            border-radius: 0; 
-            box-shadow: none;
-            overflow: hidden;
-            min-height: 100vh;
-            
-            /* 👇 추가: 로드 시 Fade-In 애니메이션 적용 */
-            animation: fadeInSlideUp 0.8s ease-out;
-            transition: background-color 0.4s ease, box-shadow 0.4s ease;
-        }
-        
-        @media (min-width: 1200px) {
-            .container {
-                max-width: 1200px;
-                border-radius: var(--radius-soft);
-                box-shadow: var(--shadow-light);
-                margin: var(--gap) 0;
-                min-height: auto;
-            }
-            body {
-                align-items: center; 
-            }
-        }
-
-
-        /* 헤더 스타일 */
-        .header {
-            text-align: center;
-            padding: var(--gap) 0;
-            border-bottom: 1px solid var(--highlight-color); 
-            transition: border-bottom-color var(--transition-speed) ease;
-        }
-
-        .header h1 {
-            font-family: var(--header-font);
-            font-size: 2rem;
-            color: var(--accent-color);
-            margin: 0 0 5px 0;
-            font-weight: 500;
-        }
-
-        .header h2 {
-            font-size: 0.9rem;
-            margin: 0;
-            font-weight: 300;
-            color: var(--sub-text);
-            transition: color var(--transition-speed) ease;
-        }
-
-        /* 탭 메뉴 */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            border-bottom: 1px solid var(--highlight-color);
-            font-size: 1.1rem;
-            transition: border-bottom-color var(--transition-speed) ease;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--sub-text);
-            opacity: 0.7;
-            /* 👇 애니메이션 추가 */
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-        }
-
-        .tab-btn:hover {
-             /* 👇 애니메이션 추가 */
-             transform: scale(1.05);
-        }
-
-        .tab-btn.active {
-            opacity: 1;
-            color: var(--main-text);
-            border-bottom: 4px solid var(--accent-color);
-            transform: scale(1.0);
-        }
-
-        /* 상세 가이드 제목 */
-        .guide-title {
-            text-align: center;
-            font-size: 1.6rem;
-            padding: 15px 0;
-            margin-bottom: var(--gap);
-            font-weight: 700;
-            color: var(--main-text);
-        }
-
-        /* 몬스터 목록 */
-        .monster-list {
-            padding: 0;
-            border-bottom: 1px solid var(--highlight-color);
-            transition: border-bottom-color var(--transition-speed) ease;
-        }
-        
-        .monster-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px var(--gap);
-            cursor: pointer;
-            border-bottom: 1px solid var(--highlight-color);
-            border-radius: var(--radius-sm);
-            /* 👇 애니메이션 강화 */
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1); 
-            box-shadow: none;
-        }
-
-        .monster-item:last-child {
-            border-bottom: none;
-        }
-
-        .monster-item:hover, .monster-item.selected {
-            background-color: var(--highlight-color);
-            /* 👇 애니메이션 강화 */
-            transform: translateY(-3px) scale(1.01); 
-            box-shadow: var(--shadow-light); 
-        }
-
-        .monster-name {
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .monster-star {
-            color: #ffc107;
-            margin-left: 5px;
-        }
-
-        .detail-btn {
-            background: var(--accent-color);
-            color: white;
-            padding: 7px 12px;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            /* 👇 애니메이션 강화 */
-            transition: all 0.2s ease-out; 
-        }
-        .detail-btn:hover {
-            background-color: #2980b9;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        /* 👇 애니메이션 추가 */
-        .detail-btn:active {
-            transform: scale(0.95);
-            box-shadow: none;
-        }
-
-        /* 페이지네이션 */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px 0;
-            font-size: 1.2rem;
-            font-weight: 700;
-            gap: 15px;
-        }
-
-        .page-nav {
-            cursor: pointer;
-            padding: 5px 10px;
-            user-select: none;
-            color: var(--accent-color);
-            /* 👇 애니메이션 강화 */
-            transition: all 0.1s ease-in-out;
-            border-radius: var(--radius-sm);
-        }
-        
-        .page-nav.disabled {
-            opacity: 0.3;
-            cursor: default;
-        }
-        
-        /* 👇 애니메이션 추가 */
-        .page-nav:not(.disabled):active {
-            background-color: var(--accent-color);
-            color: white;
-            transform: scale(0.9);
-        }
-
-        /* 상세 정보 패널 */
-        .detail-guide {
-            padding: var(--gap) 0;
-        }
-
-        .detail-sections {
-            display: flex;
-            flex-direction: row;
-            gap: var(--gap);
-            border-top: 1px solid var(--highlight-color); 
-            padding-top: var(--gap);
-            padding-left: var(--gap); 
-            padding-right: var(--gap);
-            transition: border-top-color var(--transition-speed) ease;
-        }
-
-        /* 모바일 환경에서는 상세 섹션을 세로로 배치 */
-        @media (max-width: 768px) {
-            .detail-sections {
-                flex-direction: column;
-            }
-        }
-
-
-        .info-section {
-            flex: 1;
-        }
-
-        .info-section h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            margin: 0 0 10px 0;
-            padding-bottom: 5px;
-            border-bottom: 2px solid var(--highlight-color);
-            transition: border-bottom-color var(--transition-speed) ease;
-        }
-
-        .basic-info-content p {
-            margin: 5px 0;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .guide-content ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .guide-content li {
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        .guide-content strong {
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-        /* 설정 화면 스타일 */
-        .setting-list {
-            padding: var(--gap) 0;
-        }
-
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px var(--gap);
-            border-bottom: 1px solid var(--highlight-color);
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .setting-item:last-child {
-            border-bottom: none;
-        }
-
-        /* 토글 스위치 스타일 (애니메이션 트랜지션 추가) */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 45px;
-            height: 25px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--sub-text); 
-            transition: background-color .4s, transform .4s;
-            border-radius: 25px; 
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 19px;
-            width: 19px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--accent-color); 
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-        
-                /* ------------------------------------ */
-        /* [추가] 몬스터 목록 보기 방식 설정 버튼 스타일 */
-        /* ------------------------------------ */
-        .mode-select-group {
-            display: flex;
-            background: var(--highlight-color);
-            border-radius: var(--radius-sm);
-            padding: 2px;
-        }
-
-        .mode-btn {
-            background: transparent;
-            color: var(--main-text);
-            border: none;
-            padding: 6px 10px;
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease-out;
-            flex-grow: 1; /* 버튼이 영역을 균등하게 차지하도록 */
-        }
-
-        .mode-btn.active {
-            background: var(--card-bg); /* 활성화된 버튼만 배경색을 카드 색상으로 */
-            color: var(--accent-color);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); /* 살짝 떠 있는 효과 */
-            transform: scale(1.02);
-        }
-/* ------------------------------------ */
-/* [추가] 페이지당 아이템 개수 선택 (Select Box) 스타일 */
-/* ------------------------------------ */
+/* -------------------- */
+/* 페이지당 아이템 개수 Select Box */
+/* -------------------- */
 .items-per-page-setting #items-per-page-select {
     padding: 8px 10px;
     border: 1px solid var(--highlight-color);
@@ -414,8 +565,6 @@
     background-color: var(--card-bg);
     color: var(--main-text);
     font-size: 0.9rem;
-    /* 드롭다운 화살표는 브라우저 기본값을 사용하도록 함 */
-    /* appearance: none; */ 
     cursor: pointer;
     transition: border-color 0.2s;
 }
@@ -423,154 +572,9 @@
 .items-per-page-setting #items-per-page-select:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px var(--accent-color-light);
+    box-shadow: 0 0 0 2px var(--accent-color);
 }
-        /* ------------------------------------ */
-        /* [추가/변경] 카드형 뷰 스타일 (.card-view) */
-        /* ------------------------------------ */
-
-        /* 몬스터 목록 컨테이너에 .card-view 클래스가 추가되었을 때 적용 */
-        .monster-list.card-view {
-            display: grid;
-            /* 작은 화면에서는 1열, 보통 화면부터 2열 */
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
-            gap: 10px;
-            padding: 10px var(--gap); /* 좌우 패딩을 container에서 가져오지 않고 직접 부여 */
-            border-bottom: none;
-        }
-
-        /* 페이지네이션 영역은 카드 뷰일 때 숨김 */
-        .card-view + .pagination {
-            display: none;
-        }
-
-        /* 카드형 아이템 스타일 */
-        .monster-list.card-view .monster-item {
-            /* 기존 목록 스타일 재정의 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 15px 10px;
-            height: 60px; /* 고정 높이로 통일감 */
-            border: 1px solid var(--highlight-color);
-            border-radius: var(--radius-sm);
-            border-bottom: none;
-            box-shadow: var(--shadow-light); /* 살짝 그림자 추가 */
-            
-            /* 기존 스타일 제거/재정의 */
-            border-bottom: none !important; /* 목록형에서 사용하던 선 제거 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 카드형 호버/선택 애니메이션 */
-        .monster-list.card-view .monster-item:hover, 
-        .monster-list.card-view .monster-item.selected {
-            background-color: var(--accent-color);
-            color: white; /* 텍스트 색상 반전 */
-            transform: translateY(-5px) scale(1.05); /* 더 튀어오르게 */
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* 카드형 아이템 내부 요소 스타일 조정 */
-        .monster-list.card-view .monster-item .monster-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 3px;
-            color: inherit; /* 부모(카드)의 색상을 따르도록 */
-        }
-        
-        .monster-list.card-view .monster-item .monster-star {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: inherit;
-        }
-
-        /* 카드형에서는 상세 버튼 불필요 -> 숨김 */
-        .monster-list.card-view .monster-item .detail-btn {
-            display: none;
-        }
-        
-        /* ------------------------------------ */
-        /* [변경] 기존 목록형 스타일 (.pagination-view) */
-        /* ------------------------------------ */
-        /* 목록형 뷰의 좌우 패딩을 몬스터 아이템 내부에서 처리하도록 변경하여 통일성 확보 */
-        .monster-list.pagination-view {
-            padding: 0; 
-            border-bottom: 1px solid var(--highlight-color);
-        }
-        
-        .monster-list.pagination-view .monster-item {
-            /* 목록형 아이템의 좌우 패딩을 명시적으로 var(--gap)으로 설정 */
-            padding: 6px 10px; 
-            border-bottom: 1px solid var(--highlight-color);
-        }
-        
-        /* 목록형 뷰일 때 페이지네이션 보이기 */
-        .pagination-view + .pagination {
-            display: flex; /* 기존 CSS의 flex를 다시 적용 */
-        }
-/* ------------------------------------ */
-/* 기존 카드형 스타일 (기본 모바일/작은 화면) */
-/* ------------------------------------ */
-.monster-list.card-view {
-    /* 기존: 120px 이상의 최소 너비로 자동 조절 (2~3열 정도) */
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
-    gap: 10px;
-    padding: 10px var(--gap); /* 기본 패딩 유지 */
-    /* ... 기타 스타일 유지 ... */
+/* 설정 탭 보이도록 수정 */
+#setting-content {
+    display: block; 
 }
-
-.monster-list.card-view .monster-item {
-    padding: 15px 10px; /* 아이템 내부 패딩 유지 */
-    /* ... 기타 스타일 유지 ... */
-}
-
-
-/* ------------------------------------ */
-/* 🟢 [추가] 태블릿/중간 화면 (@media) 조정 */
-/* 6x4 배열 (24개) 목표로 그리드 및 간격 조정 */
-/* ------------------------------------ */
-@media (min-width: 768px) {
-    
-    /* 1. 컨테이너 패딩 대폭 감소 */
-    .monster-list.card-view {
-        /* 좌우 패딩을 줄여 더 많은 공간 확보 */
-        padding: 5px 10px; 
-        gap: 8px; /* 간격도 살짝 줄임 */
-        
-        /* 2. 6열 배열 강제 설정 */
-        /* minmax(0, 1fr)은 아이템이 최소 너비 없이 공간을 균등하게 차지하게 함 */
-        grid-template-columns: repeat(6, minmax(0, 1fr)); 
-    }
-
-    /* 3. 아이템 내부 패딩 및 높이 조정 */
-    .monster-list.card-view .monster-item {
-        /* 아이템 내부 패딩과 높이를 줄여 카드 크기를 작게 만듭니다 */
-        padding: 10px 5px; 
-        height: 50px; /* 높이도 줄여서 공간 효율을 높임 */
-    }
-
-    /* 4. 글꼴 크기도 조정 (선택 사항) */
-    .monster-list.card-view .monster-item .monster-name {
-        font-size: 0.85rem;
-    }
-}
-
-/* ------------------------------------ */
-/* 큰 화면 (데스크톱) 추가 조정 (선택 사항) */
-/* ------------------------------------ */
-@media (min-width: 1024px) {
-    .monster-list.card-view {
-        /* 7열 이상도 가능하도록, 하지만 6열로 요청하셨으므로 6열 유지 */
-        grid-template-columns: repeat(7, minmax(0, 1fr)); 
-        gap: 8px;
-    }
-}
-
-        
-        /* 설정 탭 보이도록 수정 */
-        #setting-content {
-            display: block; 
-        }
