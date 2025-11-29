@@ -4,7 +4,8 @@
 
 // 몬스터 데이터 및 페이지네이션 상태 변수
 let ALL_MONSTERS = []; // 모든 몬스터 데이터를 저장할 배열
-const ITEMS_PER_PAGE = 8; // 페이지 당 표시할 몬스터 수 (페이지형에서만 사용)
+// 🟢 [수정] ITEMS_PER_PAGE는 이제 동적으로 설정되므로, let으로 변경하고 초기값 설정 함수에서 로드함
+let ITEMS_PER_PAGE = 8; 
 let currentPage = 1;
 let totalPages = 1;
 
@@ -25,8 +26,9 @@ const tabBtns = document.querySelectorAll('.tab-btn');
 const darkModeToggle = document.getElementById('darkmode-switch');
 const body = document.body;
 
-// 🟢 [추가] 몬스터 보기 모드 관련 변수 및 DOM 요소
+// 🟢 [추가/수정] 몬스터 보기 모드 및 페이지당 아이템 설정 관련 DOM 요소
 const modeSelectGroup = document.querySelector('.mode-select-group');
+const itemsPerPageSelect = document.getElementById('items-per-page-select'); // 🟢 [추가]
 // 초기 설정은 'card'로 지정합니다.
 let currentViewMode = localStorage.getItem('view-mode') || 'card'; 
 
@@ -34,7 +36,7 @@ let currentViewMode = localStorage.getItem('view-mode') || 'card';
 // II. 핵심 기능 함수 정의
 // =========================================================
 
-// 1. 몬스터 선택 처리 함수
+// 1. 몬스터 선택 처리 함수 (변경 없음)
 function handleMonsterSelect(event) {
     // 모든 선택 해제
     document.querySelectorAll('.monster-item').forEach(item => {
@@ -93,7 +95,7 @@ function renderDetailPanel(monster) {
     detailContentContainer.innerHTML = detailHtml;
 }
 
-// 3. 몬스터 목록 렌더링 함수 🟢 [수정] - 카드형일 때 이름만 표시
+// 3. 몬스터 목록 렌더링 함수 (변경 없음)
 function renderMonsterList(page) {
     listContainer.innerHTML = '';
     
@@ -104,12 +106,12 @@ function renderMonsterList(page) {
     let pageMonsters = [];
     
     if (currentViewMode === 'card') {
-        // 🚨 카드형일 때: 페이지네이션 무시, 모든 몬스터 표시
+        // 카드형일 때: 페이지네이션 무시, 모든 몬스터 표시
         pageMonsters = ALL_MONSTERS;
     } else {
         // 페이지형일 때: 기존 페이지네이션 로직 적용
-        const startIndex = (page - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
+        const startIndex = (page - 1) * ITEMS_PER_PAGE; // 🟢 [수정] 동적 ITEMS_PER_PAGE 사용
+        const endIndex = startIndex + ITEMS_PER_PAGE; // 🟢 [수정] 동적 ITEMS_PER_PAGE 사용
         pageMonsters = ALL_MONSTERS.slice(startIndex, endIndex);
     }
     
@@ -119,7 +121,7 @@ function renderMonsterList(page) {
         let detailButtonHtml = '';
 
         if (currentViewMode === 'card') {
-            // 🚨 카드형일 때: 이름만 표시 (번호, 별 제외)
+            // 카드형일 때: 이름만 표시 (번호, 별 제외)
             monsterDisplayName = monster.name;
         } else {
             // 페이지형일 때: 번호, 이름, 별, 상세보기 버튼 모두 표시
@@ -146,14 +148,14 @@ function renderMonsterList(page) {
     updatePaginationControls();
 }
 
-// 4. 페이지네이션 컨트롤 업데이트 🟢 [수정] - 카드형일 때 완전히 숨김
+// 4. 페이지네이션 컨트롤 업데이트 (변경 없음)
 function updatePaginationControls() {
     const paginationDiv = document.querySelector('.pagination');
     
     if (!paginationDiv) return;
     
     if (currentViewMode === 'card') {
-        // 🚨 카드형일 때: 페이지네이션 영역을 완전히 숨깁니다.
+        // 카드형일 때: 페이지네이션 영역을 완전히 숨깁니다.
         paginationDiv.style.display = 'none';
         return;
     }
@@ -177,9 +179,9 @@ function updatePaginationControls() {
     }
 }
 
-// 5. 페이지 이동 처리 🟢 [수정] - 카드형일 때 작동 방지
+// 5. 페이지 이동 처리 (변경 없음)
 function changePage(direction) {
-    if (currentViewMode === 'card') return; // 🚨 카드형일 때는 페이지 이동을 막습니다.
+    if (currentViewMode === 'card') return; // 카드형일 때는 페이지 이동을 막습니다.
     
     const newPage = currentPage + direction;
     if (newPage >= 1 && newPage <= totalPages) {
@@ -231,7 +233,7 @@ function loadDarkModeState() {
     }
 }
 
-// 8. 데이터 로드 및 초기 설정 함수 🟢 [수정] - totalPages 계산은 페이지형을 위해 유지
+// 8. 데이터 로드 및 초기 설정 함수 🟢 [수정] - totalPages 재계산
 async function loadData() {
     try {
         const response = await fetch('data.json');
@@ -239,7 +241,8 @@ async function loadData() {
             throw new Error('data.json 파일을 불러오지 못했습니다.');
         }
         ALL_MONSTERS = await response.json();
-        // totalPages 계산은 페이지형을 위해 유지
+        
+        // 🟢 [수정] ITEMS_PER_PAGE를 기반으로 totalPages 재계산
         totalPages = Math.ceil(ALL_MONSTERS.length / ITEMS_PER_PAGE); 
         
         // 초기 렌더링 시작 (현재 뷰 모드 반영)
@@ -260,7 +263,7 @@ async function loadData() {
     }
 }
 
-// 9. 몬스터 목록 보기 방식 전환 함수 🟢 [수정] - 페이지 초기화 추가
+// 9. 몬스터 목록 보기 방식 전환 함수 (변경 없음)
 function changeViewMode(newMode) {
     if (currentViewMode !== newMode) {
         currentViewMode = newMode;
@@ -295,6 +298,39 @@ function loadViewModeState() {
     if (initialActiveBtn) {
         document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
         initialActiveBtn.classList.add('active');
+    }
+}
+
+// 🟢 [추가] 11. 페이지당 아이템 개수 상태 로드 및 적용
+function loadItemsPerPageState() {
+    // Local Storage에서 값 로드, 없으면 기본값 8 사용
+    const storedValue = localStorage.getItem('items-per-page');
+    ITEMS_PER_PAGE = storedValue ? parseInt(storedValue) : 8;
+    
+    // Select 박스의 값도 설정
+    if (itemsPerPageSelect) {
+        itemsPerPageSelect.value = ITEMS_PER_PAGE;
+    }
+}
+
+// 🟢 [추가] 12. 페이지당 아이템 개수 변경 처리
+function handleItemsPerPageChange() {
+    const newValue = parseInt(itemsPerPageSelect.value);
+    if (ITEMS_PER_PAGE !== newValue) {
+        ITEMS_PER_PAGE = newValue;
+        localStorage.setItem('items-per-page', newValue); // 상태 저장
+        
+        // 페이지 개수 변경 시, 현재 페이지를 1로 리셋하고 전체 페이지 수를 재계산 후 렌더링
+        currentPage = 1;
+        totalPages = Math.ceil(ALL_MONSTERS.length / ITEMS_PER_PAGE);
+        
+        renderMonsterList(currentPage);
+        
+        // 첫 번째 몬스터 재선택 (선택된 항목 초기화 방지)
+        setTimeout(() => {
+            const firstItem = document.querySelector('.monster-list .monster-item');
+            if(firstItem) firstItem.classList.add('selected');
+        }, 0);
     }
 }
 
@@ -343,19 +379,27 @@ if (modeSelectGroup) {
     });
 }
 
+// 🟢 [추가] 페이지당 아이템 개수 변경 이벤트 리스너
+if (itemsPerPageSelect) {
+    itemsPerPageSelect.addEventListener('change', handleItemsPerPageChange);
+}
 
-// 최종 초기화: DOMContentLoaded 시점에 실행 (변경 없음)
+
+// 최종 초기화: DOMContentLoaded 시점에 실행 🟢 [수정] - 페이지당 아이템 개수 로드 추가
 document.addEventListener('DOMContentLoaded', () => {
     // 1. 다크 모드 상태를 먼저 로드하여 테마를 적용합니다.
     loadDarkModeState();
     
     // 2. 뷰 모드 상태를 로드하여 초기 모드 버튼을 활성화합니다.
     loadViewModeState();
+
+    // 🟢 [추가] 3. 페이지당 아이템 개수 상태를 로드합니다.
+    loadItemsPerPageState();
     
-    // 3. 데이터 및 콘텐츠를 로드합니다.
+    // 4. 데이터 및 콘텐츠를 로드합니다. (loadData 내부에서 ITEMS_PER_PAGE를 사용해 totalPages 계산)
     loadData();
 
-    // 4. 초기 탭 설정: 'Guide' 탭을 활성화하고 'Setting' 탭을 숨깁니다.
+    // 5. 초기 탭 설정: 'Guide' 탭을 활성화하고 'Setting' 탭을 숨깁니다.
     const guideTabBtn = document.querySelector('.tab-btn[data-tab="guide"]');
     if (guideTabBtn) {
         guideTabBtn.classList.add('active');
