@@ -404,7 +404,27 @@
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); /* 살짝 떠 있는 효과 */
             transform: scale(1.02);
         }
+/* ------------------------------------ */
+/* [추가] 페이지당 아이템 개수 선택 (Select Box) 스타일 */
+/* ------------------------------------ */
+.items-per-page-setting #items-per-page-select {
+    padding: 8px 10px;
+    border: 1px solid var(--highlight-color);
+    border-radius: var(--radius-sm);
+    background-color: var(--card-bg);
+    color: var(--main-text);
+    font-size: 0.9rem;
+    /* 드롭다운 화살표는 브라우저 기본값을 사용하도록 함 */
+    /* appearance: none; */ 
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
 
+.items-per-page-setting #items-per-page-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-color-light);
+}
         /* ------------------------------------ */
         /* [추가/변경] 카드형 뷰 스타일 (.card-view) */
         /* ------------------------------------ */
