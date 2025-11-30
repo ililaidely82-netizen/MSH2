@@ -2,7 +2,7 @@
 /* I. CSS 변수 및 폰트 설정 */
 /* ========================================================= */
 
-/* CSS 변수 설정 - 모던하고 부드러운 팔레트로 변경 및 대비 강화 */
+/* CSS 변수 설정 - 팔레트 변경 없이 유지 */
 :root {
     --bg-color: #f7f9fc; /* 아주 밝은 배경색 (푸른 기운이 도는 화이트) */
     --main-font: 'Noto Sans KR', sans-serif;
@@ -17,7 +17,12 @@
     --radius-sm: 8px;
     --gap: 20px;
     --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    --shadow-deep: 0 8px 25px rgba(0, 0, 0, 0.15); /* 깊은 그림자 추가 */
     --transition-speed: 0.3s; 
+    /* 액티브 상태 배경색 변수 (터치 피드백용) */
+    --active-highlight: #c0c6c9; 
+    /* 혁신적인 움직임을 위한 큐빅 베지어 곡선 (스프링 효과) */
+    --spring-ease: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 .dark-mode {
     --bg-color: #1e272e; /* 다크 모드 배경색: 눈이 편안한 짙은 회색 */
@@ -28,6 +33,9 @@
     --accent-color: #5dade2; /* 다크 모드 강조색: 채도 높은 밝은 파랑으로 대비 강화 */
     --highlight-color: #34495e;
     --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); 
+    --shadow-deep: 0 8px 25px rgba(0, 0, 0, 0.7); /* 다크 모드 깊은 그림자 추가 */
+    /* 다크 모드 액티브 상태 배경색 변수 */
+    --active-highlight: #3c4a5c;
 }
 
 /* 폰트 임포트 (Noto Sans KR 및 Jua 폰트) */
@@ -56,7 +64,7 @@
 
 body {
     font-family: var(--main-font);
-    font-weight: 500; /* 기본 본문 굵기를 500으로 올려 가독성 향상 */
+    font-weight: 500; 
     background-color: var(--bg-color);
     color: var(--main-text);
     margin: 0;
@@ -68,6 +76,13 @@ body {
     overflow-x: hidden;
     
     transition: background-color 0.4s ease, color 0.4s ease;
+
+    /* 모바일 기본 터치 하이라이트 제거 및 선택 방지 */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; 
+    
+    /* GPU 가속 유도 */
+    perspective: 1000px;
 }
 
 .container {
@@ -80,7 +95,7 @@ body {
     overflow: hidden;
     min-height: 100vh;
     
-    animation: fadeInSlideUp 0.8s ease-out;
+    animation: fadeInSlideUp 0.8s var(--spring-ease); /* 스프링 이징 적용 */
     transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
@@ -99,24 +114,19 @@ body {
 
 
 /* ========================================================= */
-/* III. 헤더 스타일 (배경 블러 및 둥근 모서리 적용) */
+/* III. 헤더 스타일 */
 /* ========================================================= */
 
 .header {
     position: relative; 
     overflow: hidden; 
     margin-top: 50px;
-    
     text-align: center;
     padding: var(--gap) 0;
-    
     background-image: none;
-    
     border-bottom: 1px solid var(--highlight-color); 
     transition: border-bottom-color var(--transition-speed) ease;
     z-index: 1; 
-
-    /* 모든 모서리를 둥글게 */
     border-radius: 15px; 
 }
 
@@ -128,55 +138,42 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    
-    /* 👇 이미지 경로를 실제 경로로 지정해주세요. */
     background-image: url('몬스터.jpg'); 
-    
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat;
-    
-    /* 블러 효과 적용 (3px) */
     filter: blur(3px); 
-    
-    /* 블러 효과로 인한 테두리 확장 방지 */
     transform: scale(1.02); 
-    
-    /* 텍스트 뒤로 배치 */
     z-index: -1; 
-
-    /* 배경 오버레이를 50% 투명도로 올려 대비 강화 */
     background-color: rgba(0, 0, 0, 0.5); 
     background-blend-mode: multiply;
-
-    /* 부모와 동일하게 둥근 모서리를 가지도록 함 */
     border-radius: 15px; 
 }
 
-/* 헤더 제목 (h1) 스타일 - 가독성 최적화 */
+/* 헤더 제목 (h1) 스타일 */
 .header h1 {
     font-family: var(--header-font);
     font-size: 2.4rem; 
-    color: var(--header-accent-color); /* 순수 화이트로 대비 극대화 */
+    color: var(--header-accent-color); 
     margin: 0 0 5px 0;
     font-weight: 900; 
-    letter-spacing: 2px; /* 글자 간격 넓혀 가독성 향상 */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* 짙은 그림자로 대비 강화 */
+    letter-spacing: 2px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); 
 }
 
-/* 헤더 부제목 (h2) 스타일 - 가독성 최적화 */
+/* 헤더 부제목 (h2) 스타일 */
 .header h2 {
     font-size: 1.1rem; 
     margin: 0;
-    font-weight: 700; /* 폰트 굵기를 700으로 올려 대비 강화 */
-    color: #f7f9fc; /* 배경과 잘 어울리는 아주 밝은 색상 */
+    font-weight: 700; 
+    color: #f7f9fc; 
     transition: color var(--transition-speed) ease;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 짙은 그림자로 대비 강화 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); 
 }
 
 /* 다크 모드일 때 배경 오버레이 색상 조정 */
 body.dark-mode .header::before {
-    background-color: rgba(0, 0, 0, 0.7); /* 다크 모드 시 오버레이를 더 어둡게 */
+    background-color: rgba(0, 0, 0, 0.7); 
 }
 
 
@@ -199,18 +196,23 @@ body.dark-mode .header::before {
     font-weight: 500;
     color: var(--sub-text);
     opacity: 0.7;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    transition: all 0.3s var(--spring-ease); /* 스프링 이징 적용 */
+    position: relative;
 }
 
+/* 탭 호버 효과: 튀어나오면서 부드럽게 강조 */
 .tab-btn:hover {
-     transform: scale(1.05);
+     transform: scale(1.05) translateZ(0); /* GPU 가속 및 스케일 */
+     opacity: 0.9;
 }
 
+/* 탭 Active 효과: 경계선과 함께 약간 떠오름 */
 .tab-btn.active {
     opacity: 1;
     color: var(--main-text);
     border-bottom: 4px solid var(--accent-color);
-    transform: scale(1.0);
+    transform: scale(1.0) translateY(-1px) translateZ(0); /* 살짝 위로 이동 */
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3); /* 강조색 그림자 */
 }
 
 /* 상세 가이드 제목 */
@@ -222,8 +224,7 @@ body.dark-mode .header::before {
     font-weight: 700;
     color: var(--main-text);
 }
-
-/* 상세 정보 패널 */
+/* ... (나머지 IV 섹션 유지) ... */
 .detail-guide {
     padding: var(--gap) 0;
 }
@@ -279,7 +280,7 @@ body.dark-mode .header::before {
 
 .guide-content strong {
     color: var(--accent-color);
-    font-weight: 700; /* 가독성을 위해 500에서 700으로 올림 */
+    font-weight: 700; 
 }
 
 
@@ -304,25 +305,33 @@ body.dark-mode .header::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px var(--gap); /* 좌우 패딩을 var(--gap)으로 설정 */
+    padding: 12px var(--gap); 
     cursor: pointer;
     border-bottom: 1px solid var(--highlight-color);
     border-radius: var(--radius-sm);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.5, 1); 
+    /* transition에 box-shadow 추가 및 스프링 이징 적용 */
+    transition: all 0.4s var(--spring-ease), background-color 0.1s ease-out, box-shadow 0.4s ease; 
     box-shadow: none;
 }
 .monster-list.pagination-view .monster-item:last-child {
     border-bottom: none;
 }
+/* :active 상태 (터치 피드백) - 부드러운 눌림 */
+.monster-list.pagination-view .monster-item:active {
+    background-color: var(--active-highlight); 
+    transform: scale(0.99) translateZ(0); 
+    box-shadow: none;
+}
+/* :hover/selected 상태 - 붕 뜨는 효과 강화 */
 .monster-list.pagination-view .monster-item:hover, 
 .monster-list.pagination-view .monster-item.selected {
     background-color: var(--highlight-color);
-    transform: translateY(-3px) scale(1.01); 
-    box-shadow: var(--shadow-light); 
+    transform: translateY(-5px) scale(1.02) translateZ(0); /* 더 높이 떠오름 */
+    box-shadow: var(--shadow-deep); /* 더 깊은 그림자 */
 }
 .monster-list.pagination-view .monster-name {
     font-size: 1.1rem;
-    font-weight: 700; /* 굵게 설정 */
+    font-weight: 700; 
 }
 .monster-list.pagination-view .monster-star {
     color: #ffc107;
@@ -358,13 +367,25 @@ body.dark-mode .header::before {
     border-radius: var(--radius-sm);
     border-bottom: none !important; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* transition에 box-shadow 추가 및 스프링 이징 적용 */
+    transition: all 0.4s var(--spring-ease), background-color 0.1s ease-out, box-shadow 0.4s ease;
 }
+/* 카드형 호버/선택 애니메이션 - 붕 뜨는 효과 강화 */
 .monster-list.card-view .monster-item:hover, 
 .monster-list.card-view .monster-item.selected {
     background-color: var(--accent-color);
     color: white; 
-    transform: translateY(-5px) scale(1.05); 
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px) scale(1.08) translateZ(0); /* 더 높고 크게 */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* 깊고 선명한 그림자 */
+}
+
+/* 카드뷰 :active 상태 (터치 피드백) - 부드러운 눌림 */
+.monster-list.card-view .monster-item:active {
+    background-color: var(--accent-color); 
+    color: white; 
+    transform: translateY(-1px) scale(0.96) translateZ(0); /* 확실하게 눌리는 느낌 */
+    box-shadow: none;
+    border-color: var(--accent-color);
 }
 .monster-list.card-view .monster-item .monster-name {
     font-size: 0.95rem;
@@ -426,17 +447,19 @@ body.dark-mode .header::before {
     padding: 5px 10px;
     user-select: none;
     color: var(--accent-color);
-    transition: all 0.1s ease-in-out;
+    /* transition에 스프링 이징 적용 */
+    transition: all 0.2s var(--spring-ease), background-color 0.1s ease-out;
     border-radius: var(--radius-sm);
 }
 .page-nav.disabled {
     opacity: 0.3;
     cursor: default;
 }
+/* 페이지네이션 :active 상태 - 눌림 효과 강화 */
 .page-nav:not(.disabled):active {
     background-color: var(--accent-color);
     color: white;
-    transform: scale(0.9);
+    transform: scale(0.9) translateZ(0); /* 확실하게 눌림 */
 }
 
 /* 상세 버튼 */
@@ -450,14 +473,18 @@ body.dark-mode .header::before {
     cursor: pointer;
     font-weight: 500;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease-out; 
+    /* transition에 스프링 이징 적용 */
+    transition: all 0.2s var(--spring-ease), background-color 0.1s ease-out; 
 }
 .detail-btn:hover {
     background-color: #2980b9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
+    transform: translateY(-2px) translateZ(0); /* 살짝 떠오름 */
 }
+/* 상세 버튼 :active 상태 - 눌림 효과 강화 */
 .detail-btn:active {
-    transform: scale(0.95);
+    background-color: #2980b9; 
+    transform: scale(0.95) translateZ(0); 
     box-shadow: none;
 }
 
@@ -545,14 +572,15 @@ input:checked + .slider:before {
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease-out;
+    /* transition에 스프링 이징 적용 */
+    transition: all 0.2s var(--spring-ease);
     flex-grow: 1; 
 }
 .mode-btn.active {
     background: var(--card-bg); 
     color: var(--accent-color);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); 
-    transform: scale(1.02);
+    transform: scale(1.05) translateZ(0); /* 확대 */
 }
 
 /* -------------------- */
