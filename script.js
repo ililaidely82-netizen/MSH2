@@ -1,10 +1,8 @@
 // =========================================================
-// I. 전역 변수 및 DOM 요소 선언
+// I. 전역 변수 및 DOM 요소 선언 (변경 없음)
 // =========================================================
 
-// 몬스터 데이터 및 페이지네이션 상태 변수
-let ALL_MONSTERS = []; // 모든 몬스터 데이터를 저장할 배열
-// 🟢 [수정] ITEMS_PER_PAGE는 이제 동적으로 설정되므로, let으로 변경하고 초기값 설정 함수에서 로드함
+let ALL_MONSTERS = []; 
 let ITEMS_PER_PAGE = 8; 
 let currentPage = 1;
 let totalPages = 1;
@@ -26,33 +24,55 @@ const tabBtns = document.querySelectorAll('.tab-btn');
 const darkModeToggle = document.getElementById('darkmode-switch');
 const body = document.body;
 
-// 🟢 [추가/수정] 몬스터 보기 모드 및 페이지당 아이템 설정 관련 DOM 요소
+// 몬스터 보기 모드 및 페이지당 아이템 설정 관련 DOM 요소
 const modeSelectGroup = document.querySelector('.mode-select-group');
-const itemsPerPageSelect = document.getElementById('items-per-page-select'); // 🟢 [추가]
-// 초기 설정은 'card'로 지정합니다.
+const itemsPerPageSelect = document.getElementById('items-per-page-select');
 let currentViewMode = localStorage.getItem('view-mode') || 'card'; 
+
 
 // =========================================================
 // II. 핵심 기능 함수 정의
 // =========================================================
 
-// 1. 몬스터 선택 처리 함수 (변경 없음)
-function handleMonsterSelect(event) {
-    // 모든 선택 해제
-    document.querySelectorAll('.monster-item').forEach(item => {
-        item.classList.remove('selected');
-    });
+// 헬퍼 함수: 이전에 선택된 항목을 제거하고 현재 항목을 선택합니다.
+function selectMonsterItem(element, monster) {
+    // 🟢 [개선] 현재 컨테이너 내에서 이전에 선택된 항목(하나)만 찾아서 제거
+    const previouslySelected = listContainer.querySelector('.monster-item.selected');
+    if (previouslySelected) {
+        previouslySelected.classList.remove('selected');
+    }
 
     // 현재 클릭된 아이템 선택
-    const selectedItem = event.currentTarget;
-    selectedItem.classList.add('selected');
+    element.classList.add('selected');
+    
+    // 상세 정보 렌더링
+    if (monster) {
+        renderDetailPanel(monster);
+    }
+}
 
+// 🟢 [추가] 헬퍼 함수: 목록 렌더링 후 첫 번째 항목을 선택합니다.
+function selectFirstMonster() {
+    // 렌더링이 완료된 후, 첫 번째 항목을 찾습니다.
+    const firstItem = listContainer.querySelector('.monster-item');
+    if (firstItem) {
+        const monsterId = parseInt(firstItem.dataset.id);
+        const firstMonster = ALL_MONSTERS.find(m => m.id === monsterId);
+        
+        // selectMonsterItem 함수를 사용하여 안전하게 선택 상태를 적용합니다.
+        selectMonsterItem(firstItem, firstMonster);
+    }
+}
+
+
+// 1. 몬스터 선택 처리 함수 🟢 [수정]
+function handleMonsterSelect(event) {
+    const selectedItem = event.currentTarget;
     const monsterId = parseInt(selectedItem.dataset.id);
     const selectedMonster = ALL_MONSTERS.find(m => m.id === monsterId);
 
-    if (selectedMonster) {
-        renderDetailPanel(selectedMonster);
-    }
+    // 🟢 [개선] selectMonsterItem 헬퍼 함수 호출로 로직 통합
+    selectMonsterItem(selectedItem, selectedMonster);
 }
 
 // 2. 상세 패널 렌더링 함수 (변경 없음)
@@ -63,7 +83,7 @@ function renderDetailPanel(monster) {
     const basicData = {
         '도감번호': monster.basic.도감번호,
         '이름': monster.basic.이름,
-        '종류': monster.species || '미확인', // '종류(species)' 항목
+        '종류': monster.species || '미확인', 
         '희귀도': monster.basic.희귀도,
         '출현지역': monster.location || '미확인', 
         '일반패턴': monster.basic.일반패턴,
@@ -95,7 +115,8 @@ function renderDetailPanel(monster) {
     detailContentContainer.innerHTML = detailHtml;
 }
 
-// 3. 몬스터 목록 렌더링 함수 (변경 없음)
+
+// 3. 몬스터 목록 렌더링 함수 🟢 [수정]
 function renderMonsterList(page) {
     listContainer.innerHTML = '';
     
@@ -110,8 +131,8 @@ function renderMonsterList(page) {
         pageMonsters = ALL_MONSTERS;
     } else {
         // 페이지형일 때: 기존 페이지네이션 로직 적용
-        const startIndex = (page - 1) * ITEMS_PER_PAGE; // 🟢 [수정] 동적 ITEMS_PER_PAGE 사용
-        const endIndex = startIndex + ITEMS_PER_PAGE; // 🟢 [수정] 동적 ITEMS_PER_PAGE 사용
+        const startIndex = (page - 1) * ITEMS_PER_PAGE; 
+        const endIndex = startIndex + ITEMS_PER_PAGE; 
         pageMonsters = ALL_MONSTERS.slice(startIndex, endIndex);
     }
     
@@ -146,6 +167,9 @@ function renderMonsterList(page) {
     
     // 페이지네이션 컨트롤 표시/숨김 처리
     updatePaginationControls();
+    
+    // 🟢 [개선] 렌더링 완료 후, 첫 번째 몬스터 선택 상태를 직접 적용
+    selectFirstMonster();
 }
 
 // 4. 페이지네이션 컨트롤 업데이트 (변경 없음)
@@ -179,9 +203,9 @@ function updatePaginationControls() {
     }
 }
 
-// 5. 페이지 이동 처리 (변경 없음)
+// 5. 페이지 이동 처리 🟢 [수정]
 function changePage(direction) {
-    if (currentViewMode === 'card') return; // 카드형일 때는 페이지 이동을 막습니다.
+    if (currentViewMode === 'card') return; 
     
     const newPage = currentPage + direction;
     if (newPage >= 1 && newPage <= totalPages) {
@@ -189,16 +213,7 @@ function changePage(direction) {
         renderMonsterList(currentPage);
         updatePaginationControls();
         
-        // 페이지 이동 후, 새 페이지의 첫 번째 몬스터를 자동 선택 및 상세 정보 표시
-        const firstMonsterInNewPage = ALL_MONSTERS[(currentPage - 1) * ITEMS_PER_PAGE];
-        if (firstMonsterInNewPage) {
-            renderDetailPanel(firstMonsterInNewPage);
-            // DOM이 렌더링된 후에 선택되도록 setTimeout 사용
-            setTimeout(() => {
-                const firstItem = document.querySelector('.monster-list .monster-item');
-                if(firstItem) firstItem.classList.add('selected');
-            }, 0);
-        }
+        // 🟢 [제거] selectFirstMonster가 renderMonsterList 내부에서 처리됨
     }
 }
 
@@ -233,7 +248,7 @@ function loadDarkModeState() {
     }
 }
 
-// 8. 데이터 로드 및 초기 설정 함수 🟢 [수정] - totalPages 재계산
+// 8. 데이터 로드 및 초기 설정 함수 🟢 [수정]
 async function loadData() {
     try {
         const response = await fetch('data.json');
@@ -242,20 +257,11 @@ async function loadData() {
         }
         ALL_MONSTERS = await response.json();
         
-        // 🟢 [수정] ITEMS_PER_PAGE를 기반으로 totalPages 재계산
+        // ITEMS_PER_PAGE를 기반으로 totalPages 계산
         totalPages = Math.ceil(ALL_MONSTERS.length / ITEMS_PER_PAGE); 
         
-        // 초기 렌더링 시작 (현재 뷰 모드 반영)
+        // 초기 렌더링 시작 (renderMonsterList 내부에서 selectFirstMonster 호출됨)
         renderMonsterList(currentPage);
-        
-        // 초기 선택된 몬스터 상세 정보 렌더링
-        if (ALL_MONSTERS.length > 0) {
-            renderDetailPanel(ALL_MONSTERS[0]);
-             setTimeout(() => {
-                const firstItem = document.querySelector('.monster-list .monster-item');
-                if(firstItem) firstItem.classList.add('selected');
-            }, 0);
-        }
         
     } catch (error) {
         console.error("데이터 로드 오류:", error);
@@ -263,11 +269,11 @@ async function loadData() {
     }
 }
 
-// 9. 몬스터 목록 보기 방식 전환 함수 (변경 없음)
+// 9. 몬스터 목록 보기 방식 전환 함수 🟢 [수정]
 function changeViewMode(newMode) {
     if (currentViewMode !== newMode) {
         currentViewMode = newMode;
-        localStorage.setItem('view-mode', newMode); // 상태 저장
+        localStorage.setItem('view-mode', newMode); 
         
         // 뷰 모드 전환 시 페이지를 1로 초기화 (페이지형일 때)
         currentPage = 1; 
@@ -279,14 +285,8 @@ function changeViewMode(newMode) {
             newActiveBtn.classList.add('active');
         }
         
-        // 몬스터 목록을 새로운 모드로 다시 렌더링
+        // 몬스터 목록을 새로운 모드로 다시 렌더링 (renderMonsterList 내부에서 selectFirstMonster 호출됨)
         renderMonsterList(currentPage);
-        
-        // 목록 전환 후에도 첫 번째 몬스터는 선택된 상태로 유지
-        setTimeout(() => {
-            const firstItem = document.querySelector('.monster-list .monster-item');
-            if(firstItem) firstItem.classList.add('selected');
-        }, 0);
     }
 }
 
@@ -301,45 +301,38 @@ function loadViewModeState() {
     }
 }
 
-// 🟢 [추가] 11. 페이지당 아이템 개수 상태 로드 및 적용
+// 11. 페이지당 아이템 개수 상태 로드 및 적용 (변경 없음)
 function loadItemsPerPageState() {
-    // Local Storage에서 값 로드, 없으면 기본값 8 사용
     const storedValue = localStorage.getItem('items-per-page');
     ITEMS_PER_PAGE = storedValue ? parseInt(storedValue) : 8;
     
-    // Select 박스의 값도 설정
     if (itemsPerPageSelect) {
         itemsPerPageSelect.value = ITEMS_PER_PAGE;
     }
 }
 
-// 🟢 [추가] 12. 페이지당 아이템 개수 변경 처리
+// 12. 페이지당 아이템 개수 변경 처리 🟢 [수정]
 function handleItemsPerPageChange() {
     const newValue = parseInt(itemsPerPageSelect.value);
     if (ITEMS_PER_PAGE !== newValue) {
         ITEMS_PER_PAGE = newValue;
-        localStorage.setItem('items-per-page', newValue); // 상태 저장
+        localStorage.setItem('items-per-page', newValue); 
         
-        // 페이지 개수 변경 시, 현재 페이지를 1로 리셋하고 전체 페이지 수를 재계산 후 렌더링
+        // 페이지 개수 변경 시, 현재 페이지를 1로 리셋하고 전체 페이지 수를 재계산
         currentPage = 1;
         totalPages = Math.ceil(ALL_MONSTERS.length / ITEMS_PER_PAGE);
         
+        // 렌더링 (renderMonsterList 내부에서 selectFirstMonster 호출됨)
         renderMonsterList(currentPage);
-        
-        // 첫 번째 몬스터 재선택 (선택된 항목 초기화 방지)
-        setTimeout(() => {
-            const firstItem = document.querySelector('.monster-list .monster-item');
-            if(firstItem) firstItem.classList.add('selected');
-        }, 0);
     }
 }
 
 
 // =========================================================
-// III. 이벤트 리스너 및 초기화
+// III. 이벤트 리스너 및 초기화 (변경 없음)
 // =========================================================
 
-// 페이지네이션 버튼 이벤트 리스너 (변경 없음)
+// 페이지네이션 버튼 이벤트 리스너
 prevPageNav.addEventListener('click', () => {
     if (currentPage > 1) {
         changePage(-1);
@@ -352,23 +345,23 @@ nextPageNav.addEventListener('click', () => {
     }
 });
 
-// 탭 버튼 이벤트 리스너 추가 (변경 없음)
+// 탭 버튼 이벤트 리스너 추가
 tabBtns.forEach(btn => {
     btn.addEventListener('click', handleTabSwitch);
 });
 
-// 다크 모드 스위치 변경 이벤트 리스너 (변경 없음)
+// 다크 모드 스위치 변경 이벤트 리스너
 darkModeToggle.addEventListener('change', () => {
     if (darkModeToggle.checked) {
         body.classList.add('dark-mode');
-        localStorage.setItem('dark-mode', 'enabled'); // 상태 저장
+        localStorage.setItem('dark-mode', 'enabled'); 
     } else {
         body.classList.remove('dark-mode');
-        localStorage.setItem('dark-mode', 'disabled'); // 상태 저장
+        localStorage.setItem('dark-mode', 'disabled'); 
     }
 });
 
-// 뷰 모드 버튼 이벤트 리스너 (변경 없음)
+// 뷰 모드 버튼 이벤트 리스너
 if (modeSelectGroup) {
     modeSelectGroup.addEventListener('click', (event) => {
         const target = event.target;
@@ -379,13 +372,13 @@ if (modeSelectGroup) {
     });
 }
 
-// 🟢 [추가] 페이지당 아이템 개수 변경 이벤트 리스너
+// 페이지당 아이템 개수 변경 이벤트 리스너
 if (itemsPerPageSelect) {
     itemsPerPageSelect.addEventListener('change', handleItemsPerPageChange);
 }
 
 
-// 최종 초기화: DOMContentLoaded 시점에 실행 🟢 [수정] - 페이지당 아이템 개수 로드 추가
+// 최종 초기화: DOMContentLoaded 시점에 실행
 document.addEventListener('DOMContentLoaded', () => {
     // 1. 다크 모드 상태를 먼저 로드하여 테마를 적용합니다.
     loadDarkModeState();
@@ -393,10 +386,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. 뷰 모드 상태를 로드하여 초기 모드 버튼을 활성화합니다.
     loadViewModeState();
 
-    // 🟢 [추가] 3. 페이지당 아이템 개수 상태를 로드합니다.
+    // 3. 페이지당 아이템 개수 상태를 로드합니다.
     loadItemsPerPageState();
     
-    // 4. 데이터 및 콘텐츠를 로드합니다. (loadData 내부에서 ITEMS_PER_PAGE를 사용해 totalPages 계산)
+    // 4. 데이터 및 콘텐츠를 로드합니다. 
     loadData();
 
     // 5. 초기 탭 설정: 'Guide' 탭을 활성화하고 'Setting' 탭을 숨깁니다.
