@@ -34,6 +34,55 @@ let currentViewMode = localStorage.getItem('view-mode') || 'card';
 // II. 핵심 기능 함수 정의
 // =========================================================
 
+// 🟢 [추가된 함수] JSON 가이드 데이터를 파싱하여 HTML 블록으로 변환
+/**
+ * '제목[내용1, 내용2, ...]' 패턴을 찾아 구조화된 HTML 블록으로 변환합니다.
+ * @param {Array<string>} guideArray - 몬스터의 detail.guide 배열
+ * @returns {string} - 구조화된 HTML 문자열
+ */
+function parseGuide(guideArray) {
+    let htmlOutput = '';
+    
+    // 정규 표현식: (제목) [ (내용) ] 패턴을 찾음
+    const regex = /(.+?)\[(.+?)\]/;
+
+    guideArray.forEach(item => {
+        const match = item.match(regex);
+
+        if (match) {
+            const title = match[1].trim(); // gg
+            const contentString = match[2].trim(); // aa, dd
+            
+            // 내용을 쉼표(,)를 기준으로 분리하여 배열로 만듭니다.
+            const contentItems = contentString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
+            if (contentItems.length > 0) {
+                // 블록 제목
+                htmlOutput += `<h3 class="guide-block-title">${title}</h3>`;
+                
+                // 블록 내용 리스트
+                htmlOutput += `<ul class="guide-block-list">`;
+                contentItems.forEach(content => {
+                    // **강조** 마크다운을 <strong> 태그로 간단 변환
+                    const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    htmlOutput += `<li>${formattedContent}</li>`;
+                });
+                htmlOutput += `</ul>`;
+            }
+        } else {
+            // 패턴에 맞지 않는 일반 텍스트 처리
+            // **강조** 마크다운을 <strong> 태그로 간단 변환하여 출력
+            const formattedItem = item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            htmlOutput += `<p class="guide-normal-text">${formattedItem}</p>`;
+        }
+    });
+
+    if (htmlOutput) {
+        return `<div class="guide-container">${htmlOutput}</div>`;
+    }
+    return '정보가 준비 중입니다.';
+}
+
 // 헬퍼 함수: 이전에 선택된 항목을 제거하고 현재 항목을 선택합니다.
 function selectMonsterItem(element, monster) {
     // 🟢 [개선] 현재 컨테이너 내에서 이전에 선택된 항목(하나)만 찾아서 제거
@@ -65,7 +114,7 @@ function selectFirstMonster() {
 }
 
 
-// 1. 몬스터 선택 처리 함수 🟢 [수정]
+// 1. 몬스터 선택 처리 함수 
 function handleMonsterSelect(event) {
     const selectedItem = event.currentTarget;
     const monsterId = parseInt(selectedItem.dataset.id);
@@ -75,7 +124,7 @@ function handleMonsterSelect(event) {
     selectMonsterItem(selectedItem, selectedMonster);
 }
 
-// 2. 상세 패널 렌더링 함수 (변경 없음)
+// 2. 상세 패널 렌더링 함수 🟢 [수정] guide 배열 처리 로직을 parseGuide 함수로 대체
 function renderDetailPanel(monster) {
     // 기본 정보 렌더링 
     let basicHtml = '<h3>기본 정보</h3><div class="basic-info-content">';
@@ -101,22 +150,22 @@ function renderDetailPanel(monster) {
     basicInfoContainer.innerHTML = basicHtml;
 
 
-    // 상세 정보 렌더링
-    let detailHtml = `<h3>${monster.detail.title || '상세 정보'}</h3><div class="guide-content"><ul>`;
+    // 상세 정보 (가이드) 렌더링 🟢 [핵심 수정 부분]
+    let detailHtml = `<h3>${monster.detail.title || '상세 정보'}</h3>`;
+    
     if (monster.detail.guide && monster.detail.guide.length > 0) {
-        monster.detail.guide.forEach(line => {
-            detailHtml += `<li>${line}</li>`;
-        });
+        // 🟢 parseGuide 함수를 사용하여 구조화된 HTML 생성
+        detailHtml += parseGuide(monster.detail.guide);
     } else {
-         detailHtml += '<li>정보가 준비 중입니다.</li>';
+         detailHtml += '<div class="guide-container"><p class="guide-normal-text">정보가 준비 중입니다.</p></div>';
     }
 
-    detailHtml += '</ul></div>';
+    // detailContentContainer.innerHTML에 직접 렌더링
     detailContentContainer.innerHTML = detailHtml;
 }
 
 
-// 3. 몬스터 목록 렌더링 함수 🟢 [수정]
+// 3. 몬스터 목록 렌더링 함수 
 function renderMonsterList(page) {
     listContainer.innerHTML = '';
     
@@ -203,7 +252,7 @@ function updatePaginationControls() {
     }
 }
 
-// 5. 페이지 이동 처리 🟢 [수정]
+// 5. 페이지 이동 처리 
 function changePage(direction) {
     if (currentViewMode === 'card') return; 
     
@@ -212,8 +261,6 @@ function changePage(direction) {
         currentPage = newPage;
         renderMonsterList(currentPage);
         updatePaginationControls();
-        
-        // 🟢 [제거] selectFirstMonster가 renderMonsterList 내부에서 처리됨
     }
 }
 
@@ -248,7 +295,7 @@ function loadDarkModeState() {
     }
 }
 
-// 8. 데이터 로드 및 초기 설정 함수 🟢 [수정]
+// 8. 데이터 로드 및 초기 설정 함수 
 async function loadData() {
     try {
         const response = await fetch('data.json');
@@ -269,7 +316,7 @@ async function loadData() {
     }
 }
 
-// 9. 몬스터 목록 보기 방식 전환 함수 🟢 [수정]
+// 9. 몬스터 목록 보기 방식 전환 함수 
 function changeViewMode(newMode) {
     if (currentViewMode !== newMode) {
         currentViewMode = newMode;
@@ -311,7 +358,7 @@ function loadItemsPerPageState() {
     }
 }
 
-// 12. 페이지당 아이템 개수 변경 처리 🟢 [수정]
+// 12. 페이지당 아이템 개수 변경 처리 
 function handleItemsPerPageChange() {
     const newValue = parseInt(itemsPerPageSelect.value);
     if (ITEMS_PER_PAGE !== newValue) {
