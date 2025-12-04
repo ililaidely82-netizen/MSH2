@@ -6,22 +6,29 @@
 /* CSS 변수 (Light Mode) */
 /* -------------------- */
 :root {
+    /* Colors */
     --bg-color: #f7f9fc; 
     --main-text: #2c3e50;
     --sub-text: #7f8c8d;
     --card-bg: #ffffff;
-    --header-accent-color: #ffffff; 
+    --header-text-color: #ffffff; /* header-accent-color -> header-text-color로 명확하게 변경 */
     --accent-color: #3498db; 
     --highlight-color: #ecf0f1; 
     --active-highlight: #c0c6c9; 
+    --shadow-active-color: rgba(52, 152, 219, 0.3); /* 활성화 상태 그림자 색상 변수 추가 */
+    --border-color: #bdc3c7; /* 테두리 색상 변수 추가 */
     
+    /* Typography */
     --main-font: 'Noto Sans KR', sans-serif;
     --header-font: 'Jua', cursive;
 
+    /* Spacing & Dimensions */
     --radius-soft: 16px; 
     --radius-sm: 8px;
     --gap: 20px;
+    --header-margin-top: 50px; /* 하드코딩된 값 변수화 */
     
+    /* Effects */
     --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
     --shadow-deep: 0 8px 25px rgba(0, 0, 0, 0.15);
     
@@ -37,12 +44,14 @@
     --main-text: #ecf0f1;
     --sub-text: #bdc3c7; 
     --card-bg: #2f3640; 
-    --header-accent-color: #ffffff; 
+    --header-text-color: #ffffff; 
     --accent-color: #5dade2; 
     --highlight-color: #34495e;
+    --border-color: #5d6d7e; /* 다크 모드 테두리 색상 */
     --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); 
     --shadow-deep: 0 8px 25px rgba(0, 0, 0, 0.7); 
     --active-highlight: #3c4a5c;
+    --shadow-active-color: rgba(93, 173, 226, 0.5); /* 다크 모드 활성화 그림자 색상 변경 */
 }
 
 /* 폰트 임포트 및 애니메이션 키프레임 */
@@ -71,7 +80,6 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
     -webkit-tap-highlight-color: transparent;
     user-select: none; 
-    perspective: 1000px; /* 3D 효과를 위한 GPU 가속 */
 }
 
 .container {
@@ -82,7 +90,7 @@ body {
     border-radius: 0; 
     box-shadow: none;
     overflow: hidden;
-    min-height: 100vh;
+    min-height: 100%; 
     animation: fadeInSlideUp 0.8s var(--spring-ease);
     transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
@@ -93,7 +101,7 @@ body {
         border-radius: var(--radius-soft);
         box-shadow: var(--shadow-light);
         margin: var(--gap) 0;
-        min-height: auto;
+        min-height: auto; 
     }
     body {
         align-items: center; 
@@ -106,13 +114,14 @@ body {
 .header {
     position: relative; 
     overflow: hidden; 
-    margin-top: 50px;
+    margin-top: var(--header-margin-top); 
     text-align: center;
     padding: var(--gap) 0;
     border-bottom: 1px solid var(--highlight-color); 
     transition: border-bottom-color var(--transition-speed) ease;
     z-index: 1; 
-    border-radius: 15px; 
+    border-radius: var(--radius-soft); 
+    perspective: 1000px; 
 }
 
 /* 배경 이미지 및 효과 */
@@ -127,9 +136,9 @@ body {
     filter: blur(3px); 
     transform: scale(1.02); 
     z-index: -1; 
-    background-color: rgba(0, 0, 0, 0.5); /* 오버레이 */
+    background-color: rgba(0, 0, 0, 0.5); 
     background-blend-mode: multiply;
-    border-radius: 15px; 
+    border-radius: var(--radius-soft); 
 }
 body.dark-mode .header::before {
     background-color: rgba(0, 0, 0, 0.7); 
@@ -139,7 +148,7 @@ body.dark-mode .header::before {
 .header h1 {
     font-family: var(--header-font);
     font-size: 2.4rem; 
-    color: var(--header-accent-color); 
+    color: var(--header-text-color); 
     margin: 0 0 5px 0;
     font-weight: 900; 
     letter-spacing: 2px; 
@@ -183,7 +192,7 @@ body.dark-mode .header::before {
     color: var(--main-text);
     border-bottom: 4px solid var(--accent-color);
     transform: scale(1.0) translateY(-1px) translateZ(0);
-    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 2px 5px var(--shadow-active-color); 
 }
 
 /* 상세 섹션 레이아웃 */
@@ -219,7 +228,7 @@ body.dark-mode .header::before {
 }
 
 /* -------------------- */
-/* V. 구조화된 Guide Block 스타일 (요청에 의해 추가/통일됨) */
+/* V. 구조화된 Guide Block 스타일 */
 /* -------------------- */
 
 .guide-container {
@@ -235,19 +244,19 @@ body.dark-mode .header::before {
 .guide-block {
     margin: 20px 0;
     padding: 15px 0;
-    border: 1px solid var(--highlight-color); /* 변수 통일 */
-    border-radius: var(--radius-sm); /* 변수 통일 */
-    background-color: var(--card-bg); /* 변수 통일 */
-    box-shadow: var(--shadow-light); /* 변수 통일 */
+    border: 1px solid var(--highlight-color); 
+    border-radius: var(--radius-sm); 
+    background-color: var(--card-bg); 
+    box-shadow: var(--shadow-light); 
 }
 
 .guide-block-title {
     font-weight: 700;
-    color: var(--accent-color); /* 변수 통일 */
+    color: var(--accent-color); 
     padding: 0 15px 5px;
     margin: 0;
     font-size: 1.1rem;
-    border-bottom: 1px solid var(--highlight-color); /* 변수 통일 */
+    border-bottom: 1px solid var(--highlight-color); 
 }
 
 .guide-block-list {
@@ -258,9 +267,9 @@ body.dark-mode .header::before {
 
 .guide-block-list li {
     padding: 5px 0;
-    color: var(--main-text); /* 변수 통일 */
+    color: var(--main-text); 
     font-size: 0.95em;
-    border-bottom: 1px dotted var(--highlight-color); /* 변수 통일 */
+    border-bottom: 1px dotted var(--highlight-color); 
 }
 
 .guide-block-list li:last-child {
@@ -272,11 +281,10 @@ body.dark-mode .header::before {
     font-weight: 700; 
 }
 
-/* 기존 불필요한 스타일 제거 (가이드 내용이 parseGuide로 대체되었으므로) */
 .guide-content ul { list-style: none; padding-left: 0; }
 .guide-content li { margin-bottom: 8px; font-size: 0.95rem; line-height: 1.4; }
 /* ========================================================= */
-/* V. 몬스터 목록 (List & Card View) 스타일 */
+/* VI. 몬스터 목록 (List & Card View) 스타일 - 🟢 [수정] 페이지형 뷰 디자인 복원 */
 /* ========================================================= */
 
 .monster-list {
@@ -286,43 +294,139 @@ body.dark-mode .header::before {
 }
 
 /* -------------------- */
-/* 목록형 뷰 (.pagination-view) */
+/* 몬스터 리스트 아이템 기본 스타일 */
+/* -------------------- */
+.monster-item {
+    cursor: pointer;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color); 
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column;
+    height: 100%; 
+    position: relative;
+    padding: 0; 
+}
+
+.monster-item:hover,
+.monster-item.selected {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--card-bg); 
+    transform: translateY(-2px);
+    border-color: var(--accent-color); 
+}
+
+/* 🟢 [수정] 상징색 블록 및 도감번호 컨테이너 스타일 (기본값은 카드 뷰를 따름) */
+.monster-symbol-info {
+    height: 80px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; 
+    margin: 0;
+    border-bottom: 1px solid var(--border-color); 
+}
+
+.monster-id-code {
+    font-size: 1.5rem; 
+    font-weight: 900;
+    color: white; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); 
+    z-index: 10;
+}
+
+/* 🟢 [수정] 몬스터 이름 스타일 (기본값은 카드 뷰를 따름) */
+.monster-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--main-text);
+    flex-grow: 0; 
+    padding: 10px 5px;
+    margin-top: auto; 
+}
+
+
+/* -------------------- */
+/* 목록형 뷰 (.pagination-view) - 🟢 [복원] 예전 디자인으로 오버라이드 */
 /* -------------------- */
 .monster-list.pagination-view {
     padding: 0; 
+    display: block; /* 그리드 해제 */
 }
 .monster-list.pagination-view .monster-item {
+    /* 목록형 아이템: 한 줄 레이아웃 */
     display: flex;
-    justify-content: space-between;
+    flex-direction: row; 
     align-items: center;
-    padding: 12px var(--gap); 
-    cursor: pointer;
-    border-bottom: 1px solid var(--highlight-color);
-    border-radius: var(--radius-sm);
-    transition: all 0.4s var(--spring-ease), background-color 0.1s ease-out, box-shadow 0.4s ease; 
+    padding: 10px 0; /* 내부 패딩 조절 */
+    height: auto;
+    border-radius: 0;
     box-shadow: none;
+    border: none;
+    border-bottom: 1px solid var(--highlight-color);
 }
 .monster-list.pagination-view .monster-item:last-child {
     border-bottom: none;
 }
-.monster-list.pagination-view .monster-item:active {
-    background-color: var(--active-highlight); 
-    transform: scale(0.99) translateZ(0); 
-    box-shadow: none;
-}
+/* 목록형 호버/선택 애니메이션 */
 .monster-list.pagination-view .monster-item:hover, 
 .monster-list.pagination-view .monster-item.selected {
     background-color: var(--highlight-color);
-    transform: translateY(-5px) scale(1.02) translateZ(0); 
-    box-shadow: var(--shadow-deep); 
+    transform: none; /* 변형 제거 */
+    box-shadow: none;
+    border-color: transparent;
 }
+.monster-list.pagination-view .monster-item:active {
+    background-color: var(--active-highlight); 
+    transform: scale(0.99) translateZ(0); 
+}
+
+/* 🟢 [복원] Pagination View의 Symbol Info: 상징색을 border-left로 사용 */
+.monster-list.pagination-view .monster-symbol-info {
+    /* 상징색을 왼쪽 테두리(border-left)로 표시 */
+    height: 100%; /* 아이템 높이 전체 */
+    width: 0; /* 내용물 공간 확보는 도감번호에서 함 */
+    padding: 0;
+    margin: 0;
+    border-right: none;
+    border-bottom: none;
+    background-color: transparent !important; /* JS에서 들어간 background-color 무시 */
+    border-left: 5px solid; /* 상징색을 border-left로 처리 (JS의 style="background-color:..."를 CSS 변수나 동적 클래스로 바꾸는 것이 이상적이나, 기존 구조 유지) */
+    
+    /* 도감번호를 포함해야 하므로 flex 속성은 유지하되, 내부 정렬은 왼쪽으로*/
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* 🟢 [복원] 도감 번호 스타일: Symbol Info 안의 회색 텍스트 */
+.monster-list.pagination-view .monster-id-code {
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--sub-text); /* 회색 텍스트 */
+    text-shadow: none;
+    padding: 0 10px; /* 왼쪽 테두리와 이름 사이 간격 확보 */
+    margin-left: -5px; /* border-left 두께만큼 밀어넣기 */
+}
+
+/* 🟢 [복원] 몬스터 이름 스타일 */
 .monster-list.pagination-view .monster-name {
-    font-size: 1.1rem;
-    font-weight: 700; 
+    text-align: left;
+    padding: 0 10px;
+    flex-grow: 1; /* 남은 공간을 이름이 채우도록 */
+    margin-top: 0;
+    margin-left:30px;
+    font-size: 1.1em;
 }
-.monster-list.pagination-view .monster-star {
-    color: #ffc107;
-    margin-left: 5px;
+
+/* 상세 버튼의 위치 조정 */
+.monster-list.pagination-view .detail-btn {
+    display: block; /* 버튼 표시 */
+    margin-left: auto;
+    margin-right: 15px;
 }
 .pagination-view + .pagination {
     display: flex; 
@@ -330,7 +434,7 @@ body.dark-mode .header::before {
 
 
 /* -------------------- */
-/* 카드형 뷰 (.card-view) */
+/* 카드형 뷰 (.card-view) - [기존 유지] 큰 상징색 블록 디자인 유지 */
 /* -------------------- */
 .monster-list.card-view {
     display: grid;
@@ -342,45 +446,56 @@ body.dark-mode .header::before {
 .card-view + .pagination {
     display: none;
 }
+
 .monster-list.card-view .monster-item {
+    height: auto; 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 15px 10px;
-    height: 60px; 
-    border: 1px solid var(--highlight-color);
-    border-radius: var(--radius-sm);
-    border-bottom: none !important; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s var(--spring-ease), background-color 0.1s ease-out, box-shadow 0.4s ease;
+    justify-content: flex-start;
+    align-items: stretch;
+    box-shadow: var(--shadow-light);
 }
+
+/* 카드 뷰 상징색 블록 크기 및 중앙 정렬 */
+.monster-list.card-view .monster-symbol-info {
+    height: 6px; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    padding: 0; 
+    margin: 0;
+    border-bottom: 1px solid var(--border-color); 
+}
+
+/* 카드 뷰 이름 스타일 */
+.monster-list.card-view .monster-name {
+    padding: 10px 5px;
+    flex-grow: 0;
+    font-size: 0.95rem;
+}
+
 /* 카드형 호버/선택 애니메이션 */
 .monster-list.card-view .monster-item:hover, 
 .monster-list.card-view .monster-item.selected {
-    background-color: var(--accent-color);
-    color: white; 
+    background-color: var(--card-bg); 
     transform: translateY(-8px) scale(1.08) translateZ(0); 
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); 
-}
-/* 카드뷰 :active 상태 */
-.monster-list.card-view .monster-item:active {
-    background-color: var(--accent-color); 
-    color: white; 
-    transform: translateY(-1px) scale(0.96) translateZ(0); 
-    box-shadow: none;
     border-color: var(--accent-color);
 }
-.monster-list.card-view .monster-item .monster-name {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: inherit; 
+.monster-list.card-view .monster-item:hover .monster-name,
+.monster-list.card-view .monster-item.selected .monster-name {
+    color: var(--accent-color); 
 }
+
+.monster-list.card-view .monster-item:active {
+    background-color: var(--card-bg); 
+    transform: translateY(-1px) scale(0.96) translateZ(0); 
+    box-shadow: none;
+}
+
 .monster-list.card-view .monster-item .detail-btn {
     display: none;
 }
-
 
 /* -------------------- */
 /* 미디어 쿼리 (카드 뷰) */
@@ -390,9 +505,8 @@ body.dark-mode .header::before {
         grid-template-columns: repeat(6, minmax(0, 1fr)); 
         gap: 8px; 
     }
-    .monster-list.card-view .monster-item {
-        padding: 10px 5px; 
-        height: 50px; 
+    .monster-list.card-view .monster-symbol-info {
+         height: 70px;
     }
     .monster-list.card-view .monster-item .monster-name {
         font-size: 0.85rem;
@@ -403,8 +517,9 @@ body.dark-mode .header::before {
         grid-template-columns: repeat(7, minmax(0, 1fr)); 
     }
 }
+
 /* ========================================================= */
-/* VI. 페이지네이션 및 버튼 스타일 */
+/* VII. 페이지네이션 및 버튼 스타일 */
 /* ========================================================= */
 
 /* 페이지네이션 */
@@ -459,7 +574,7 @@ body.dark-mode .header::before {
     box-shadow: none;
 }
 /* ========================================================= */
-/* VII. 설정 화면 스타일 */
+/* VIII. 설정 화면 스타일 */
 /* ========================================================= */
 
 .setting-list {
@@ -524,6 +639,11 @@ input:checked + .slider:before { transform: translateX(20px); }
     border-radius: var(--radius-sm);
     padding: 2px;
 }
+.mode-btn:hover,
+.mode-btn.active:hover
+{
+  transform: scale(0.9);
+}
 .mode-btn {
     background: transparent;
     color: var(--main-text);
@@ -535,12 +655,14 @@ input:checked + .slider:before { transform: translateX(20px); }
     cursor: pointer;
     transition: all 0.2s var(--spring-ease);
     flex-grow: 1; 
+    transition: transform 0.2s;
 }
 .mode-btn.active {
     background: var(--card-bg); 
     color: var(--accent-color);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); 
-    transform: scale(1.05) translateZ(0); 
+    transform: scale(1.1) translateZ(0); 
+    transition: transform 0.2s;
 }
 
 /* -------------------- */
@@ -562,7 +684,7 @@ input:checked + .slider:before { transform: translateX(20px); }
     box-shadow: 0 0 0 2px var(--accent-color);
 }
 /* ========================================================= */
-/* VIII. 푸터 스타일 */
+/* IX. 푸터 스타일 */
 /* ========================================================= */
 footer{
   display: flex;
@@ -571,4 +693,4 @@ footer{
   text-align: center; 
   width: 100%; 
   padding: 20px 0;
-}
+    }
