@@ -64,61 +64,89 @@
         </div>
     </div>
     
-    <div id="setting-content">
-        <div class="guide-title">설정</div>
-        <div class="setting-list">
-            
-            <div class="setting-item">
-                <span>알림 설정</span>
-                <label class="switch">
-                    <input type="checkbox" checked id="noti-switch">
-                    <span class="slider"></span>
-                </label>
-            </div>
+<div id="setting-content">
+    <div class="guide-title">설정</div>
+    <div class="setting-list">
+        
+        <div class="setting-item">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell" style="margin-right: 8px; vertical-align: middle;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                알림 설정
+            </span>
+            <label class="switch">
+                <input type="checkbox" checked id="noti-switch">
+                <span class="slider"></span>
+            </label>
+        </div>
 
-            <div class="setting-item">
-                <span>다크 모드</span>
-                <label class="switch">
-                    <input type="checkbox" id="darkmode-switch">
-                    <span class="slider"></span>
-                </label>
-            </div>
+        <div class="setting-item">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon" style="margin-right: 8px; vertical-align: middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                다크 모드
+            </span>
+            <label class="switch">
+                <input type="checkbox" id="darkmode-switch">
+                <span class="slider"></span>
+            </label>
+        </div>
 
-            <div class="setting-item">
-                <span>카드 이미지 보기</span>
-                <label class="switch">
-                    <input type="checkbox" id="image-mode-switch">
-                    <span class="slider"></span>
-                </label>
-            </div>
+        <div class="setting-item">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image" style="margin-right: 8px; vertical-align: middle;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                카드 이미지 보기
+            </span>
+            <label class="switch">
+                <input type="checkbox" id="image-mode-switch">
+                <span class="slider"></span>
+            </label>
+        </div>
 
-            <div class="setting-item view-mode-setting">
-                <span>몬스터 목록 보기</span>
-                <div class="mode-select-group">
-                    <button class="mode-btn active" data-mode="card" id="mode-card-btn">카드형</button>
-                    <button class="mode-btn" data-mode="pagination" id="mode-pagination-btn">페이지형</button>
-                </div>
-            </div>
-              <div class="setting-item items-per-page-setting">
-                <span>페이지당 몬스터 수</span>
-                <select id="items-per-page-select">
-                    <option value="5">5개</option>
-                    <option value="6">6개</option>
-                    <option value="8">8개</option>
-                    <option value="10">10개</option>
-                    <option value="11">11개</option>
-                    <option value="15">15개</option>
-                    <option value="20">20개</option>
-                    <option value="25">25개</option>
-                </select>
-            </div>
-            <div class="setting-item view-mode-setting"> </div>
-            <div class="setting-item">
-                <span>데이터 초기화</span>
-                <button class="detail-btn" style="background-color: #e74c3c;">초기화</button>
+        <div class="setting-item view-mode-setting">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid" style="margin-right: 8px; vertical-align: middle;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                몬스터 목록 보기
+            </span>
+            <div class="mode-select-group">
+                <button class="mode-btn active" data-mode="card" id="mode-card-btn">카드형</button>
+                <button class="mode-btn" data-mode="pagination" id="mode-pagination-btn">페이지형</button>
             </div>
         </div>
+          
+        <div class="setting-item items-per-page-setting">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trello" style="margin-right: 8px; vertical-align: middle;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="9"></rect><rect x="14" y="7" width="3" height="5"></rect></svg>
+                페이지당 몬스터 수
+            </span>
+            <select id="items-per-page-select">
+                <option value="5">5개</option>
+                <option value="6">6개</option>
+                <option value="8">8개</option>
+                <option value="10">10개</option>
+                <option value="11">11개</option>
+                <option value="15">15개</option>
+                <option value="20">20개</option>
+                <option value="25">25개</option>
+            </select>
+        </div>
+        
+        <div class="setting-item view-mode-setting"> </div>
+        
+        <div class="setting-item">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2" style="margin-right: 8px; vertical-align: middle;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                데이터 초기화
+            </span>
+            <button class="detail-btn" style="background-color: #e74c3c;">초기화</button>
+        </div>
     </div>
+</div>
+
 </div>
 <script src="script.js"></script>
 </body>
