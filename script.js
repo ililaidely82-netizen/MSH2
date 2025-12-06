@@ -20,14 +20,20 @@ const guideContent = document.getElementById('guide-content');
 const settingContent = document.getElementById('setting-content');
 const tabBtns = document.querySelectorAll('.tab-btn');
 
-// 다크 모드 관련 DOM 요소
+// 다크 모드 및 설정 관련 DOM 요소
 const darkModeToggle = document.getElementById('darkmode-switch');
+// 🟢 [추가됨] 이미지 모드 토글 스위치 선택
+const imageModeToggle = document.getElementById('image-mode-switch');
+
 const body = document.body;
 
 // 몬스터 보기 모드 및 페이지당 아이템 설정 관련 DOM 요소
 const modeSelectGroup = document.querySelector('.mode-select-group');
 const itemsPerPageSelect = document.getElementById('items-per-page-select');
 let currentViewMode = localStorage.getItem('view-mode') || 'card'; 
+
+// 🟢 [추가됨] 이미지 모드 상태 변수 (기본값 false)
+let isImageMode = localStorage.getItem('image-mode') === 'enabled';
 
 
 // =========================================================
@@ -40,6 +46,8 @@ let currentViewMode = localStorage.getItem('view-mode') || 'card';
 function parseGuide(guideArray) {
     let htmlOutput = '';
     const regex = /(.+?)\[(.+?)\]/; // 정규식: 제목[내용]
+
+    if (!guideArray) return ''; // 예외 처리
 
     guideArray.forEach(item => {
         const match = item.match(regex);
@@ -154,13 +162,25 @@ function renderDetailPanel(monster) {
     detailContentContainer.innerHTML = detailHtml;
 }
 
-// 🟢 [추가] 헬퍼 함수: 카드 보기 모드의 몬스터 아이템 HTML 생성
+// 🟢 [수정됨] 헬퍼 함수: 카드 보기 모드의 몬스터 아이템 HTML 생성
+// 이미지 모드가 켜져있으면 이미지를, 아니면 색상을 표시
 function generateCardHtml(monster, monsterColor, monsterIdCode) {
     let detailButtonHtml = '<button class="detail-btn" style="display:none;">상세</button>';
+    let innerContent = '';
+
+    // 이미지 모드 활성화 시 이미지 태그 생성
+    if (isImageMode) {
+        // 파일명 규칙: micon도감번호.png (예: micon98.png)
+        const imgSrc = `micon${monster.basic.도감번호}.png`;
+        
+        // 이미지가 있으면 보여주고, 로드 실패(onerror)시 숨겨서 배경색이 보이게 함
+        innerContent = `<img src="${imgSrc}" class="card-monster-img" alt="${monster.name}" onerror="this.style.display='none'">`;
+    }
 
     return `
         <div class="monster-item" data-id="${monster.id}">
             <div class="monster-symbol-info" style="background-color: ${monsterColor};">
+                ${innerContent}
             </div>
             <span class="monster-name">${monster.name}</span>
             ${detailButtonHtml}
@@ -168,7 +188,7 @@ function generateCardHtml(monster, monsterColor, monsterIdCode) {
     `;
 }
 
-// 🟢 [추가] 헬퍼 함수: 페이지 보기 모드의 몬스터 아이템 HTML 생성
+// 🟢 [변경 없음] 헬퍼 함수: 페이지 보기 모드의 몬스터 아이템 HTML 생성
 function generatePaginationHtml(monster, monsterColor, monsterIdCode) {
     let detailButtonHtml = '<button class="detail-btn">상세</button>';
 
@@ -183,7 +203,7 @@ function generatePaginationHtml(monster, monsterColor, monsterIdCode) {
     `;
 }
 
-// 3. 몬스터 목록 렌더링 함수 (분리하여 재정의)
+// 3. 몬스터 목록 렌더링 함수
 function renderMonsterList(page) {
     if (!listContainer) return; 
 
@@ -210,17 +230,16 @@ function renderMonsterList(page) {
         const monsterIdCode = String(monster.id).padStart(3, '0'); 
 
         if (currentViewMode === 'card') {
-            // 🟢 [수정] 카드 보기 모드용 HTML 생성 함수 호출
+            // [수정됨] 카드 생성 함수 호출 (이미지 모드 여부 반영됨)
             listHtml += generateCardHtml(monster, monsterColor, monsterIdCode);
         } else {
-            // 🟢 [수정] 페이지 보기 모드용 HTML 생성 함수 호출
+            // [변경 없음] 페이지형 생성 함수 호출
             listHtml += generatePaginationHtml(monster, monsterColor, monsterIdCode);
         }
     });
 
     listContainer.innerHTML = listHtml;
 
-    // 이벤트 리스너 할당은 이벤트 위임 대신 document.querySelectorAll로 직접 할당 유지
     document.querySelectorAll('.monster-item').forEach(item => {
         item.addEventListener('click', handleMonsterSelect);
     });
@@ -299,6 +318,13 @@ function loadDarkModeState() {
     } else {
         body.classList.remove('dark-mode');
         if(darkModeToggle) darkModeToggle.checked = false;
+    }
+}
+
+// 🟢 [추가됨] 이미지 모드 상태 로드 및 적용 함수
+function loadImageModeState() {
+    if (imageModeToggle) {
+        imageModeToggle.checked = isImageMode;
     }
 }
 
@@ -426,6 +452,16 @@ if(darkModeToggle){
     });
 }
 
+// 🟢 [추가됨] 이미지 모드 스위치 변경 이벤트 리스너
+if(imageModeToggle) {
+    imageModeToggle.addEventListener('change', () => {
+        isImageMode = imageModeToggle.checked;
+        localStorage.setItem('image-mode', isImageMode ? 'enabled' : 'disabled');
+        // 설정 변경 시 즉시 리스트 다시 렌더링 (카드뷰에 즉각 반영)
+        renderMonsterList(currentPage);
+    });
+}
+
 // 뷰 모드 버튼 이벤트 리스너
 if (modeSelectGroup) {
     modeSelectGroup.addEventListener('click', (event) => {
@@ -448,6 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. 상태 로드
     loadDarkModeState();
     loadViewModeState();
+    loadImageModeState(); // [추가됨] 이미지 모드 상태 로드
     
     // 2. 데이터 및 콘텐츠 로드
     loadData();
@@ -467,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Footer 생성 (선택 사항)
-const footerHTML = "<footer>[v1.45] 설산의 고대수(古代獸), 환수(幻獣)</footer>";
+const footerHTML = "<footer>[v1.5] 설산의 고대수(古代獸), 환수(幻獣)</footer>";
 const container = document.querySelector('.container');
 if (container) {
     container.insertAdjacentHTML('beforeend', footerHTML);
