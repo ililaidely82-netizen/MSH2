@@ -22,8 +22,9 @@ const tabBtns = document.querySelectorAll('.tab-btn');
 
 // 다크 모드 및 설정 관련 DOM 요소
 const darkModeToggle = document.getElementById('darkmode-switch');
-// 🟢 [추가됨] 이미지 모드 토글 스위치 선택
 const imageModeToggle = document.getElementById('image-mode-switch');
+// 🆕 [추가됨] 두꺼운 테두리 토글 스위치 선택
+const thickBorderToggle = document.getElementById('thick-border-switch'); 
 
 const body = document.body;
 
@@ -32,8 +33,10 @@ const modeSelectGroup = document.querySelector('.mode-select-group');
 const itemsPerPageSelect = document.getElementById('items-per-page-select');
 let currentViewMode = localStorage.getItem('view-mode') || 'card'; 
 
-// 🟢 [추가됨] 이미지 모드 상태 변수 (기본값 false)
+// 몬스터 설정 상태 변수 (Local Storage에서 로드)
 let isImageMode = localStorage.getItem('image-mode') === 'enabled';
+// 🆕 [추가됨] 두꺼운 테두리 모드 상태 변수
+let isThickBorderMode = localStorage.getItem('thick-border-mode') === 'enabled';
 
 
 // =========================================================
@@ -162,23 +165,31 @@ function renderDetailPanel(monster) {
     detailContentContainer.innerHTML = detailHtml;
 }
 
-// 🟢 [수정됨] 헬퍼 함수: 카드 보기 모드의 몬스터 아이템 HTML 생성
-// 이미지 모드가 켜져있으면 이미지를, 아니면 색상을 표시
-function generateCardHtml(monster, monsterColor, monsterIdCode) {
+/**
+ * 몬스터 아이템 HTML 생성 (카드 뷰)
+ * - 이미지 모드 및 두꺼운 테두리 모드 상태를 반영합니다.
+ */
+function generateCardHtml(monster, monsterColor) {
     let detailButtonHtml = '<button class="detail-btn" style="display:none;">상세</button>';
     let innerContent = '';
+    
+    // 🆕 테두리 스타일 변수 초기화
+    let itemStyle = ''; 
+    
+    // 🆕 두꺼운 테두리 모드 활성화 시 몬스터 상징색을 테두리 색상으로 지정
+    if (isThickBorderMode) {
+        itemStyle = `border-color: ${monsterColor};`; 
+    }
 
     // 이미지 모드 활성화 시 이미지 태그 생성
     if (isImageMode) {
-        // 파일명 규칙: micon도감번호.png (예: micon98.png)
         const imgSrc = `micon${monster.basic.도감번호}.png`;
-        
         // 이미지가 있으면 보여주고, 로드 실패(onerror)시 숨겨서 배경색이 보이게 함
         innerContent = `<img src="${imgSrc}" class="card-monster-img" alt="${monster.name}" onerror="this.style.display='none'">`;
     }
 
     return `
-        <div class="monster-item" data-id="${monster.id}">
+        <div class="monster-item" data-id="${monster.id}" style="${itemStyle}">
             <div class="monster-symbol-info" style="background-color: ${monsterColor};">
                 ${innerContent}
             </div>
@@ -188,13 +199,18 @@ function generateCardHtml(monster, monsterColor, monsterIdCode) {
     `;
 }
 
-// 🟢 [변경 없음] 헬퍼 함수: 페이지 보기 모드의 몬스터 아이템 HTML 생성
-function generatePaginationHtml(monster, monsterColor, monsterIdCode) {
+/**
+ * 몬스터 아이템 HTML 생성 (목록/페이지 뷰)
+ * 🚨 [수정됨]: 상징색을 이용한 중앙 세로선 추가 (monster-color-bar)
+ */
+function generatePaginationHtml(monster, monsterColor) {
     let detailButtonHtml = '<button class="detail-btn">상세</button>';
+    const monsterIdCode = String(monster.id).padStart(3, '0'); 
 
     return `
         <div class="monster-item" data-id="${monster.id}">
-            <div class="monster-symbol-info" style="border-left-color: ${monsterColor};">
+            <div class="monster-symbol-info" style="border-bottom-color:${monsterColor};">
+                <div class="monster-color-bar" style="background-color: ${monsterColor};"></div>
                 <span class="monster-id-code">${monsterIdCode}</span> 
             </div>
             <span class="monster-name">${monster.name}</span>
@@ -209,7 +225,9 @@ function renderMonsterList(page) {
 
     listContainer.innerHTML = '';
     
-    listContainer.classList.remove('card-view', 'pagination-view');
+    // 🆕 [수정됨] 관련 클래스 모두 제거 후 재설정
+    listContainer.classList.remove('card-view', 'pagination-view', 'image-hidden', 'thick-border');
+    
     listContainer.classList.add(currentViewMode === 'card' ? 'card-view' : 'pagination-view');
 
     let monstersToRender = [];
@@ -225,16 +243,25 @@ function renderMonsterList(page) {
     
     let listHtml = '';
 
+    // 몬스터 목록 렌더링 및 모드별 클래스 추가
+    if (currentViewMode === 'card') {
+        // 이미지 모드가 비활성화 상태일 때 image-hidden 클래스 추가 (CSS에서 6px 높이 적용)
+        if (!isImageMode) {
+            listContainer.classList.add('image-hidden');
+        }
+        // 🆕 두꺼운 테두리 모드가 활성화 상태일 때 thick-border 클래스 추가 (CSS에서 굵은 테두리 적용)
+        if (isThickBorderMode) {
+            listContainer.classList.add('thick-border');
+        }
+    }
+
     monstersToRender.forEach(monster => {
         const monsterColor = monster.color_code || 'var(--accent-color)'; 
-        const monsterIdCode = String(monster.id).padStart(3, '0'); 
-
+        
         if (currentViewMode === 'card') {
-            // [수정됨] 카드 생성 함수 호출 (이미지 모드 여부 반영됨)
-            listHtml += generateCardHtml(monster, monsterColor, monsterIdCode);
+            listHtml += generateCardHtml(monster, monsterColor);
         } else {
-            // [변경 없음] 페이지형 생성 함수 호출
-            listHtml += generatePaginationHtml(monster, monsterColor, monsterIdCode);
+            listHtml += generatePaginationHtml(monster, monsterColor);
         }
     });
 
@@ -321,14 +348,21 @@ function loadDarkModeState() {
     }
 }
 
-// 🟢 [추가됨] 이미지 모드 상태 로드 및 적용 함수
+// 8. 이미지 모드 상태 로드 및 적용 함수
 function loadImageModeState() {
     if (imageModeToggle) {
         imageModeToggle.checked = isImageMode;
     }
 }
 
-// 8. 데이터 로드 및 초기 설정 함수 
+// 🆕 [추가됨] 두꺼운 테두리 모드 상태 로드 및 적용 함수
+function loadThickBorderModeState() {
+    if (thickBorderToggle) {
+        thickBorderToggle.checked = isThickBorderMode;
+    }
+}
+
+// 9. 데이터 로드 및 초기 설정 함수 
 async function loadData() {
     loadItemsPerPageState(); 
     
@@ -351,7 +385,7 @@ async function loadData() {
     }
 }
 
-// 9. 몬스터 목록 보기 방식 전환 함수 
+// 10. 몬스터 목록 보기 방식 전환 함수 
 function changeViewMode(newMode) {
     if (currentViewMode !== newMode) {
         currentViewMode = newMode;
@@ -373,7 +407,7 @@ function changeViewMode(newMode) {
     }
 }
 
-// 10. 뷰 모드 초기 상태 로드 및 적용
+// 11. 뷰 모드 초기 상태 로드 및 적용
 function loadViewModeState() {
     currentViewMode = localStorage.getItem('view-mode') || 'card';
     
@@ -384,7 +418,7 @@ function loadViewModeState() {
     }
 }
 
-// 11. 페이지당 아이템 개수 상태 로드 및 적용
+// 12. 페이지당 아이템 개수 상태 로드 및 적용
 function loadItemsPerPageState() {
     const storedValue = localStorage.getItem('items-per-page');
     if (storedValue) {
@@ -396,7 +430,7 @@ function loadItemsPerPageState() {
     }
 }
 
-// 12. 페이지당 아이템 개수 변경 처리 
+// 13. 페이지당 아이템 개수 변경 처리 
 function handleItemsPerPageChange() {
     if (!itemsPerPageSelect) return;
     
@@ -452,11 +486,20 @@ if(darkModeToggle){
     });
 }
 
-// 🟢 [추가됨] 이미지 모드 스위치 변경 이벤트 리스너
+// 이미지 모드 스위치 변경 이벤트 리스너
 if(imageModeToggle) {
     imageModeToggle.addEventListener('change', () => {
         isImageMode = imageModeToggle.checked;
         localStorage.setItem('image-mode', isImageMode ? 'enabled' : 'disabled');
+        renderMonsterList(currentPage);
+    });
+}
+
+// 🆕 [추가됨] 두꺼운 테두리 모드 스위치 변경 이벤트 리스너
+if(thickBorderToggle) {
+    thickBorderToggle.addEventListener('change', () => {
+        isThickBorderMode = thickBorderToggle.checked;
+        localStorage.setItem('thick-border-mode', isThickBorderMode ? 'enabled' : 'disabled');
         // 설정 변경 시 즉시 리스트 다시 렌더링 (카드뷰에 즉각 반영)
         renderMonsterList(currentPage);
     });
@@ -484,7 +527,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. 상태 로드
     loadDarkModeState();
     loadViewModeState();
-    loadImageModeState(); // [추가됨] 이미지 모드 상태 로드
+    loadImageModeState(); 
+    loadThickBorderModeState(); // 🆕 두꺼운 테두리 모드 상태 로드
     
     // 2. 데이터 및 콘텐츠 로드
     loadData();
