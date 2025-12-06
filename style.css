@@ -366,6 +366,7 @@ body.dark-mode .header::before {
     box-shadow: none;
     border: none;
     border-bottom: 1px solid var(--highlight-color);
+    position: relative; /* 자식 요소인 color-bar를 위한 상대 위치 설정 */
 }
 .monster-list.pagination-view .monster-item:last-child {
     border-bottom: none;
@@ -383,30 +384,40 @@ body.dark-mode .header::before {
     transform: scale(0.99) translateZ(0); 
 }
 
-/* Pagination View의 Symbol Info: 상징색을 border-left로 사용 */
+/* Pagination View의 Symbol Info: 도감 번호와 세로선 컨테이너 */
 .monster-list.pagination-view .monster-symbol-info {
     height: 100%; 
-    width: 0; 
+    min-width: 80px; /* 도감 번호 공간 확보 */
     padding: 0;
     margin: 0;
-    border-right: none;
+    border-right: 1px solid var(--highlight-color); /* 도감번호와 이름 분리선 */
     border-bottom: none;
-    background-color: transparent !important; 
-    border-left: 5px solid; 
+    background-color: transparent; 
     
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    position: relative;
 }
 
-/* 도감 번호 스타일: Symbol Info 안의 회색 텍스트 */
+/* 🚨 새로 추가: 상징색을 나타내는 세로선 (도감번호 영역에 위치) */
+.monster-list.pagination-view .monster-color-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px; /* 선의 두께 */
+    height: 100%;
+    z-index: 1; /* 도감번호보다 아래에 배치 */
+}
+
+/* 도감 번호 스타일: Symbol Info 안의 텍스트 */
 .monster-list.pagination-view .monster-id-code {
     font-size: 1em;
     font-weight: 700;
     color: var(--sub-text); 
     text-shadow: none;
-    padding: 0 10px; 
-    margin-left: -5px; 
+    padding-right: 10px; /* 오른쪽 경계선과 간격 */
+    z-index: 10;
 }
 
 /* 몬스터 이름 스타일 */
@@ -415,7 +426,7 @@ body.dark-mode .header::before {
     padding: 0 10px;
     flex-grow: 1; 
     margin-top: 0;
-    margin-left:30px;
+    margin-left: 0; /* Symbol Info가 분리선을 제공하므로 margin-left 제거 */
     font-size: 1.1em;
 }
 
@@ -504,6 +515,33 @@ body.dark-mode .header::before {
     background-color: var(--highlight-color); 
     display: block;
     border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+/* -------------------- */
+/* 카드형 뷰 (.card-view) */
+/* -------------------- */
+
+/* ... (기존 .monster-list.card-view 스타일 생략) ... */
+
+/* 🚨 추가됨: 두꺼운 테두리 모드 (.thick-border) */
+.monster-list.card-view.thick-border .monster-item {
+    /* 굵기를 2배(1px -> 2.5px) 증가시키고, 색상은 상징색으로 변경 */
+    border: 2.5px solid var(--border-color); /* 기본 테두리 색상으로 초기 설정 */
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.monster-list.card-view.thick-border .monster-item:hover,
+.monster-list.card-view.thick-border .monster-item.selected {
+    /* 호버/선택 시 상징색으로 테두리 색상 변경 */
+    /* border-color는 상징색이 아닌 배경색을 사용하므로, JS에서 처리하는 것이 좋지만,
+       여기서는 일단 테두리 굵기와 기본 호버 스타일을 조정합니다.
+       실제 몬스터별 색상은 JS에서 인라인 스타일로 처리해야 합니다. */
+    transform: translateY(-5px) scale(1.05) translateZ(0); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.monster-list.card-view.thick-border .monster-symbol-info {
+    border-bottom: 2.5px solid var(--border-color); 
 }
 
 /* -------------------- */
